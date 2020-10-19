@@ -7,10 +7,38 @@ data_base = db.Data_Base(user[0], user[1])
 
 @app.route('/')
 def index():
-    return redirect('/create')
+    user = request.cookies.get('user')
+    if user == None or user == 'None': resp = make_response(redirect('/login'))
+    else: resp = make_response(render_template('index.html', user = user))
+    return resp
+
+@app.route('/login', methods = ('GET', 'POST'))
+def login():
+    user = request.cookies.get('user')
+    if not (user == None or user == 'None'): return redirect('/')
+    if request.method == 'GET': resp = make_response(render_template('login.html'))
+    else:
+        user = request.form['user']
+        passwd = hashlib.md5(request.form['passwd'].encode()).hexdigest()
+        if data_base.user_check(user, passwd):
+            resp = make_response(redirect('/'))
+            resp.set_cookie('user', user)
+        else: resp = 'usuário ou senha incorretos'
+    return resp
+
+@app.route('/logout', methods = ('GET', 'POST'))
+def logout():
+    if request.method == 'GET': resp = render_template('logout.html')
+    else:
+        resp = make_response(redirect('/login'))
+        resp.set_cookie('user', 'None')
+        resp.set_cookie('type_account', 'None')
+    return resp
 
 @app.route('/create', methods = ('GET', 'POST'))
 def create():
+    user = request.cookies.get('user')
+    if not (user == None or user == 'None'): return redirect('/')
     type_account = request.cookies.get('type_account')
     if request.method == 'GET' and (type_account == None or type_account == 'None'):
         resp = make_response(render_template('set_type_account.html'))
@@ -21,11 +49,13 @@ def create():
     elif request.method == 'GET' and not (type_account == None or type_account == 'None'):
         resp = make_response(render_template('create_credentials.html', type_account = type_account))
     else:
-        resp = 'top'
         user = request.form['user']
         name = request.form['real_name']
         passwd = hashlib.md5(request.form['passwd'].encode()).hexdigest()
-        data_base.create_user(user, name, passwd, type_account)
+        if data_base.create_user(user, name, passwd, type_account):
+            resp = make_response(redirect('/'))
+            resp.set_cookie('user', user)
+        else: resp = 'algo deu errado :/'
     return resp
 
 
