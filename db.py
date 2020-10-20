@@ -1,4 +1,4 @@
-import mysql.connector
+import mysql.connector, functions
 
 class Data_Base(object):
     def __init__(self, user, passwd):
@@ -12,13 +12,46 @@ class Data_Base(object):
         return True
 
     def user_check(self, user, passwd):
-        self.mycursor.execute('select * from users')
-        list_of_users = []
+        list_users = []
         list_passwd = []
+        self.mycursor.execute('select user, passwd from users')
         for i in self.mycursor:
-            list_of_users.append(i[0])
+            list_users.append(i[0])
             list_passwd.append(i[1])
-        for i in list_of_users:
-            for l in list_passwd:
-                if user == i and passwd == l: return True
+        for i in range(len(list_users)):
+            if list_users[i] == user and list_passwd[i] == passwd: return True
         return False
+    
+    def get_type_account(self, user):
+        list_users = []
+        list_types = []
+        self.mycursor.execute('select user, type_account from users')
+        for i in self.mycursor:
+            list_users.append(i[0])
+            list_types.append(i[1])
+        for i in range(len(list_users)):
+            if user == list_users[i]: return list_types[i]
+        return None
+
+    def get_name(self, user):
+        list_users = []
+        list_names = []
+        self.mycursor.execute('select user, name from users')
+        for i in self.mycursor:
+            list_users.append(i[0])
+            list_names.append(i[1])
+        for i in range(len(list_users)):
+            if user == list_users[i]: return list_names[i]
+        return None
+
+if __name__ == "__main__":
+    user = input("Usuário MySQL\n$ ")
+    passwd = input("Senha do usuário MySQL\n$ ")
+    mydb = mysql.connector.connect(user = user, passwd = passwd)
+    mycursor = mydb.cursor()
+    mycursor.execute('create database notificador')
+    mycursor.execute('use notificador')
+    mycursor.execute('create table users (user varchar(255) primary key, name varchar(255), passwd varchar(255), type_account varchar(255))')
+    mydb.commit()
+    functions.register_db(user, passwd)
+    print('Tudo em dia!')
