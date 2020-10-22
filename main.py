@@ -28,15 +28,15 @@ def painel():
 def login():
     user = request.cookies.get('user')
     if not (user == None or user == 'None'): return redirect('/')
-    if request.method == 'GET': resp = make_response(render_template('login.html'))
+    if request.method == 'GET': resposta = make_response(render_template('login.html'))
     else:
         user = request.form['user']
         passwd = hashlib.md5(request.form['passwd'].encode()).hexdigest()
         if data_base.user_check(user, passwd):
-            resp = make_response(redirect('/'))
-            resp.set_cookie('user', user)
-        else: resp = 'usuário ou senha incorretos'
-    return resp
+            resposta = make_response(redirect('/'))
+            resposta.set_cookie('user', user)
+        else: resposta = 'usuário ou senha incorretos'
+    return resposta
 
 @app.route('/logout', methods = ('GET', 'POST'))
 def logout():
