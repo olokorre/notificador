@@ -1,7 +1,7 @@
 # Notificador
 
 ## Implementação
- - [ ] Usuário;
+ - [x] Usuário;
  - [ ] Notas;
  - [ ] Sistema de avaliação;
  - [ ] Forum;
