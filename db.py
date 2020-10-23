@@ -45,13 +45,13 @@ class Data_Base(object):
         return None
 
 if __name__ == "__main__":
-    user = input("Usuário MySQL\n$ ")
-    passwd = input("Senha do usuário MySQL\n$ ")
+    user = input("Usuario MySQL\n$ ")
+    passwd = input("Senha do usuario MySQL\n$ ")
     mydb = mysql.connector.connect(user = user, passwd = passwd)
     mycursor = mydb.cursor()
     mycursor.execute('create database notificador')
     mycursor.execute('use notificador')
-    mycursor.execute('create table users (user varchar(255) primary key, name varchar(255), passwd varchar(255), type_account varchar(255))')
+    mycursor.execute('create table users (user varchar(25) primary key, name varchar(25), passwd varchar(25), type_account varchar(25))')
     mydb.commit()
     functions.register_db(user, passwd)
     print('Tudo em dia!')
