@@ -6,12 +6,14 @@ class Data_Base(object):
         self.mycursor = self.mydb.cursor()
         self.mycursor.execute("use notificador")
 
-    def create_user(self, user, real_name, passwd, type_account):
+    def create_user(self, user, real_name, passwd_text, type_account):
+        passwd = functions.md5_hash(passwd_text)
         self.mycursor.execute('insert into users (user, name, passwd, type_account) values ("%s", "%s", "%s", "%s")' %(user, real_name, passwd, type_account))
         self.mydb.commit()
         return True
 
-    def user_check(self, user, passwd):
+    def user_check(self, user, passwd_text):
+        passwd = functions.md5_hash(passwd_text)
         list_users = []
         list_passwd = []
         self.mycursor.execute('select user, passwd from users')
@@ -19,6 +21,7 @@ class Data_Base(object):
             list_users.append(i[0])
             list_passwd.append(i[1])
         for i in range(len(list_users)):
+            print(user, list_users[i], passwd, list_passwd[i])
             if list_users[i] == user and list_passwd[i] == passwd: return True
         return False
     
@@ -45,13 +48,13 @@ class Data_Base(object):
         return None
 
 if __name__ == "__main__":
-    user = input("Usuário MySQL\n$ ")
-    passwd = input("Senha do usuário MySQL\n$ ")
+    user = input("Usuario MySQL\n$ ")
+    passwd = input("Senha do usuario MySQL\n$ ")
     mydb = mysql.connector.connect(user = user, passwd = passwd)
     mycursor = mydb.cursor()
     mycursor.execute('create database notificador')
     mycursor.execute('use notificador')
-    mycursor.execute('create table users (user varchar(255) primary key, name varchar(255), passwd varchar(255), type_account varchar(255))')
+    mycursor.execute('create table users (user varchar(25) primary key, name varchar(25), passwd varchar(25), type_account varchar(25))')
     mydb.commit()
     functions.register_db(user, passwd)
     print('Tudo em dia!')

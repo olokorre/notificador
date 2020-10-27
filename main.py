@@ -5,15 +5,13 @@ app = Flask(__name__)
 user = functions.user_db()
 data_base = db.Data_Base(user[0], user[1])
 
-user = "eu"
-
 @app.route('/')
 def index():
     user = request.cookies.get('user')
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
     if user == None or user == 'None': resp = make_response(redirect('/login'))
-    else: resp = make_response(render_template('index.html', name = name, type_account = type(0)))
+    else: resp = make_response(render_template('index.html', name = name, type_account = type_account))
     return resp
 
 @app.route('/login', methods = ('GET', 'POST'))
@@ -23,7 +21,7 @@ def login():
     if request.method == 'GET': resp = make_response(render_template('login.html'))
     else:
         user = request.form['user']
-        passwd = hashlib.md5(request.form['passwd'].encode()).hexdigest()
+        passwd = request.form['passwd']
         if data_base.user_check(user, passwd):
             resp = make_response(redirect('/'))
             resp.set_cookie('user', user)
@@ -57,7 +55,8 @@ def create():
     else:
         user = request.form['user']
         name = request.form['real_name']
-        passwd = hashlib.md5(request.form['passwd'].encode()).hexdigest()
+        passwd = request.form['passwd']
+        print(passwd)
         if data_base.create_user(user, name, passwd, type_account):
             resp = make_response(redirect('/'))
             resp.set_cookie('user', user)
@@ -78,4 +77,4 @@ def send_image(path):
 	return send_from_directory('static/image', path)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
