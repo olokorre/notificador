@@ -14,6 +14,16 @@ def index():
     else: resp = make_response(render_template('index.html', name = name, type_account = type_account))
     return resp
 
+@app.route('/panel', methods = ('GET', 'POST'))
+def painel():
+    user = request.cookies.get('user')
+    name = data_base.get_name(user)
+    type_account = data_base.get_type_account(user)
+    if request.method == 'GET':
+        if type_account == 'Professor': resp = make_response(render_template('teacher_panel.html', name = name))
+        elif type_account == 'Aluno': resp = make_response(render_template('student_panel.html', name = name))
+    return resp
+
 @app.route('/login', methods = ('GET', 'POST'))
 def login():
     user = request.cookies.get('user')
@@ -56,7 +66,6 @@ def create():
         user = request.form['user']
         name = request.form['real_name']
         passwd = request.form['passwd']
-        print(passwd)
         if data_base.create_user(user, name, passwd, type_account):
             resp = make_response(redirect('/'))
             resp.set_cookie('user', user)

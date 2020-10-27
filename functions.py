@@ -13,10 +13,5 @@ def register_db(user, passwd):
 	print('Pronto!')
 
 def md5_hash(text):
-	print(text)
 	resp = hashlib.md5(text.encode()).hexdigest()
 	return resp
-
-if __name__ == "__main__":
-	text = input('> ')
-	print(md5_hash(text))

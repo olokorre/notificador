@@ -21,7 +21,6 @@ class Data_Base(object):
             list_users.append(i[0])
             list_passwd.append(i[1])
         for i in range(len(list_users)):
-            print(user, list_users[i], passwd, list_passwd[i])
             if list_users[i] == user and list_passwd[i] == passwd: return True
         return False
     
