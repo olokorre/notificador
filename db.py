@@ -6,12 +6,14 @@ class Data_Base(object):
         self.mycursor = self.mydb.cursor()
         self.mycursor.execute("use notificador")
 
-    def create_user(self, user, real_name, passwd, type_account):
+    def create_user(self, user, real_name, passwd_text, type_account):
+        passwd = functions.md5_hash(passwd_text)
         self.mycursor.execute('insert into users (user, name, passwd, type_account) values ("%s", "%s", "%s", "%s")' %(user, real_name, passwd, type_account))
         self.mydb.commit()
         return True
 
-    def user_check(self, user, passwd):
+    def user_check(self, user, passwd_text):
+        passwd = functions.md5_hash(passwd_text)
         list_users = []
         list_passwd = []
         self.mycursor.execute('select user, passwd from users')

@@ -31,7 +31,7 @@ def login():
     if request.method == 'GET': resp = make_response(render_template('login.html'))
     else:
         user = request.form['user']
-        passwd = hashlib.md5(request.form['passwd'].encode()).hexdigest()
+        passwd = request.form['passwd']
         if data_base.user_check(user, passwd):
             resp = make_response(redirect('/'))
             resp.set_cookie('user', user)
@@ -65,7 +65,7 @@ def create():
     else:
         user = request.form['user']
         name = request.form['real_name']
-        passwd = hashlib.md5(request.form['passwd'].encode()).hexdigest()
+        passwd = request.form['passwd']
         if data_base.create_user(user, name, passwd, type_account):
             resp = make_response(redirect('/'))
             resp.set_cookie('user', user)
