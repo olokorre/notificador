@@ -6,10 +6,10 @@ $(document).ready(function(){
         socket.emit('joined', {});
     });
     socket.on('status', function(data) {
-        $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        $('#chat').val($('#chat').val() + 'Você agora pode falar...\n')
     });
     socket.on('message', function(data) {
+        var time = Date.now()
         $('#chat').val($('#chat').val() + data.msg + '\n');
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });

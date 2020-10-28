@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, send_from_directory, request, make_response, session
 from flask_socketio import SocketIO, emit, join_room
+from datetime import datetime
 import db, hashlib, functions
 
 app = Flask(__name__)
@@ -34,7 +35,8 @@ def joined(message):
 
 @socketio.on('text')
 def text(message):
-    emit('message', {'msg': '%s: %s' %(session.get('user'), message['msg'])}, room = 'main_room')
+    now = datetime.now()
+    emit('message', {'msg': '<%s> %s: %s' %(now.strftime("%d/%m/%Y %H:%M"), session.get('user'), message['msg'])}, room = 'main_room')
 
 @app.route('/login', methods = ('GET', 'POST'))
 def login():
