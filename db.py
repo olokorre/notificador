@@ -53,7 +53,7 @@ if __name__ == "__main__":
     mycursor = mydb.cursor()
     mycursor.execute('create database notificador')
     mycursor.execute('use notificador')
-    mycursor.execute('create table users (user varchar(25) primary key, name varchar(25), passwd varchar(25), type_account varchar(25))')
+    mycursor.execute('create table users (user varchar(50) primary key, name varchar(50), passwd varchar(50), type_account varchar(50))')
     mydb.commit()
     functions.register_db(user, passwd)
     print('Tudo em dia!')

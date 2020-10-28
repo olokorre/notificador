@@ -3,12 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src='/js/jquary.js'></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src='/js/chat.js'></script>
     <title>Notificador</title>
 </head>
 <body>
     <h1>Bem vindo {{name}}!</h1>
     <a href='/panel'><button>Painel do {{type_account}}</button></a><br />
     <a href='/logout'><button>Sair</button></a>
+    <div name='chat'>
+        <h3>Chat</h3>
+        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
+        <input id="text" size="80" placeholder="Digite sua mensagem"><br><br>
+    </div>
 </body>
 </html>
