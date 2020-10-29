@@ -14,8 +14,8 @@ def index():
     user = session.get('user')
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
-    if user == None: resp = make_response(redirect('/login'))
-    else: resp = make_response(render_template('index.html', name = name, type_account = type_account))
+    if user == None or user == 'None': resp = make_response(redirect('/login'))
+    else: resp = make_response(render_template('index.html', name = name, type_account = type_account, user = user))
     return resp
 
 @app.route('/panel', methods = ('GET', 'POST'))
@@ -24,19 +24,24 @@ def painel():
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
     if request.method == 'GET':
-        if type_account == 'Professor': resp = make_response(render_template('teacher_panel.html', name = name))
-        elif type_account == 'Aluno': resp = make_response(render_template('student_panel.html', name = name))
+        if type_account == 'Professor': resp = make_response(render_template('teacher_panel.html', name = name, user = user))
+        elif type_account == 'Aluno': resp = make_response(render_template('student_panel.html', name = name, user = user))
     return resp
 
 @socketio.on('joined')
 def joined(message):
-    join_room('main_room')
-    emit('status', {'msg': '%s entrou no chat!' %(session.get('user'))}, room = 'main_room')
+    room = 'main_room'
+    session['room'] = room
+    join_room(room)
+    menssage = data_base.get_menssage(room)
+    emit('status', {'msg': '%s' %(menssage), 'session': '%s' %(session.get('user'))}, room = room)
 
 @socketio.on('text')
 def text(message):
     now = datetime.now()
-    emit('message', {'msg': '<%s> %s: %s' %(now.strftime("%d/%m/%Y %H:%M"), session.get('user'), message['msg'])}, room = 'main_room')
+    resp = '<%s> %s: %s' %(now.strftime("%d/%m/%Y %H:%M"), session.get('user'), message['msg'])
+    data_base.store_menssage(session.get('room'), resp)
+    emit('message', {'msg': '%s' %(resp)}, room = session.get('room'))
 
 @app.route('/login', methods = ('GET', 'POST'))
 def login():

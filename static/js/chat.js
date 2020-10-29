@@ -6,7 +6,9 @@ $(document).ready(function(){
         socket.emit('joined', {});
     });
     socket.on('status', function(data) {
-        $('#chat').val($('#chat').val() + 'Você agora pode falar...\n')
+        $('#chat').val('');
+        $('#chat').val($('#chat').val() + data.msg);
+        $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
     socket.on('message', function(data) {
         var time = Date.now()

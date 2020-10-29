@@ -46,6 +46,17 @@ class Data_Base(object):
             if user == list_users[i]: return list_names[i]
         return None
 
+    def store_menssage(self, room, message):
+        self.mycursor.execute('insert into chat (room, menssage) values ("%s", "%s")' %(room, message))
+        self.mydb.commit()
+
+    def get_menssage(self, room):
+        menssage = ''
+        self.mycursor.execute('select menssage from chat where room = "%s"' %(room))
+        for i in self.mycursor:
+            menssage += '%s\n' %(i)
+        return menssage
+
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
     passwd = input("Senha do usuario MySQL\n$ ")
@@ -54,6 +65,7 @@ if __name__ == "__main__":
     mycursor.execute('create database notificador')
     mycursor.execute('use notificador')
     mycursor.execute('create table users (user varchar(50) primary key, name varchar(50), passwd varchar(50), type_account varchar(50))')
+    mycursor.execute('create table chat (id int(80) primary key auto_increment, room varchar(25), menssage varchar(80))')
     mydb.commit()
     functions.register_db(user, passwd)
     print('Tudo em dia!')
