@@ -2,6 +2,6 @@
 
 ## Implementação
  - [X] Usuário;
- - [ ] Chat com websocket e armazenamento de mensagens;
+ - [X] Chat com websocket e armazenamento de mensagens;
  - [ ] Notas;
  - [ ] Sistema de avaliação;
