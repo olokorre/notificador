@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src='/js/chat.js'></script>
     <title>Painel do Professor</title>
 </head>
-<body>
+<body>  
     <h1>Bem vindo {{name}}!</h1>
     <p>Aqui ficam as suas notas</p>
     <a href='/'><button>Voltar</button></a>
+    <div name='chat'>
+        <h3>Chat</h3>
+        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
+        <input id="text" size="80" placeholder="Digite sua mensagem"><br><br>
+    </div>
 </body>
 </html>
