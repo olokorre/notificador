@@ -24,8 +24,8 @@ def painel():
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
     if request.method == 'GET':
-        if type_account == 'Professor': resp = make_response(render_template('teacher_panel.html', name = name, user = user))
-        elif type_account == 'Aluno': resp = make_response(render_template('student_panel.html', name = name, user = user))
+        if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name, user = user))
+        elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name, user = user))
     return resp
 
 @socketio.on('joined')
@@ -47,7 +47,7 @@ def text(message):
 def login():
     user = session.get('user')
     if not (user == None): return redirect('/')
-    if request.method == 'GET': resp = make_response(render_template('login.html'))
+    if request.method == 'GET': resp = make_response(render_template('login/login.html'))
     else:
         user = request.form['user']
         passwd = request.form['passwd']
@@ -61,7 +61,7 @@ def login():
 def logout():
     user = session.get('user')
     if (user == None): return redirect('/login')
-    if request.method == 'GET': resp = render_template('logout.html')
+    if request.method == 'GET': resp = render_template('login/logout.html')
     else:
         resp = make_response(redirect('/login'))
         session['user'] = None
@@ -74,13 +74,13 @@ def create():
     if not (user == None): return redirect('/')
     type_account = session.get('type_account')
     if request.method == 'GET' and type_account == None:
-        resp = make_response(render_template('set_type_account.html'))
+        resp = make_response(render_template('login/set_type_account.html'))
     elif request.method == 'POST' and type_account == None:
         type_account = request.form['type-account']
         resp = make_response(redirect('/create'))
         session['type_account'] = type_account
     elif request.method == 'GET' and not type_account == None:
-        resp = make_response(render_template('create_credentials.html', type_account = type_account))
+        resp = make_response(render_template('login/create_credentials.html', type_account = type_account))
     else:
         user = request.form['user']
         name = request.form['real_name']
