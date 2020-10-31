@@ -10,7 +10,20 @@
 </head>
 <body>  
     <h1>Bem vindo {{name}}!</h1>
-    <p>Aqui você pode organizar as turmas.</p>
+    <table>
+        <tr style='background-color: rgb(182, 182, 182);'>
+            <th>Nome</th>
+            <th>Turma</th>
+        </tr>
+        {% for i in alunos %}
+        <tr>
+            {% for l in i %}
+            <td>{{l}}</td>
+            <td>{{l}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
     <a href='/'><button>Voltar</button></a>
     <div name='chat'>
         <h3>Chat</h3>

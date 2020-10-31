@@ -57,8 +57,17 @@ class Data_Base(object):
             menssage += '%s\n' %(i)
         return menssage
 
-    # def create_classroom(self, techer):
-    #     self.mycursor.execute('create table %s')
+    def request_studanst(self):
+        alunos = []
+        name = []
+        type_account = []
+        self.mycursor.execute('select name, type_account from users;')
+        for i in self.mycursor:
+            if i[1] == 'Aluno':
+                name.append(i[0])
+                type_account.append(i[1])
+        alunos = [name, type_account]
+        return alunos
 
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")

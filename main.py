@@ -27,7 +27,7 @@ def painel():
     if request.method == 'GET':
         if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name))
         elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name))
-        elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name))
+        elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name, alunos = data_base.request_studanst()))
         else: resp = 'ainda não'
     return resp
 
