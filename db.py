@@ -57,6 +57,9 @@ class Data_Base(object):
             menssage += '%s\n' %(i)
         return menssage
 
+    # def create_classroom(self, techer):
+    #     self.mycursor.execute('create table %s')
+
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
     passwd = input("Senha do usuario MySQL\n$ ")

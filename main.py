@@ -9,12 +9,13 @@ socketio = SocketIO(app)
 user = functions.user_db()
 data_base = db.Data_Base(user[0], user[1])
 
+#Rotas principais
 @app.route('/')
 def index():
     user = session.get('user')
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
-    if user == None or user == 'None': resp = make_response(redirect('/login'))
+    if user == None or user == 'None' or user == 'None': resp = make_response(redirect('/login'))
     else: resp = make_response(render_template('index.html', name = name, type_account = type_account, user = user))
     return resp
 
@@ -24,10 +25,26 @@ def painel():
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
     if request.method == 'GET':
-        if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name, user = user))
-        elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name, user = user))
+        if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name))
+        elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name))
+        elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name))
+        else: resp = 'ainda não'
     return resp
 
+@app.route('/config')
+def config():
+    user = session.get('user')
+    type_account = data_base.get_type_account(user)
+    if user == None or user == 'None' or user == 'None': resp = make_response(redirect('/login'))
+    elif type_account == 'Professor':resp = make_response(render_template('config/teacher_config.html'))
+    else: resp = 'não sei :('
+    return resp
+
+@app.route('/classroom_config')
+def classroom_config():
+    return 'gerir alunos'
+
+#rotas websocket
 @socketio.on('joined')
 def joined(message):
     room = 'main_room'
@@ -43,10 +60,11 @@ def text(message):
     data_base.store_menssage(session.get('room'), resp)
     emit('message', {'msg': '%s' %(resp)}, room = session.get('room'))
 
+#rotas de login
 @app.route('/login', methods = ('GET', 'POST'))
 def login():
     user = session.get('user')
-    if not (user == None): return redirect('/')
+    if not (user == None or user == 'None'): return redirect('/')
     if request.method == 'GET': resp = make_response(render_template('login/login.html'))
     else:
         user = request.form['user']
@@ -60,7 +78,7 @@ def login():
 @app.route('/logout', methods = ('GET', 'POST'))
 def logout():
     user = session.get('user')
-    if (user == None): return redirect('/login')
+    if (user == None or user == 'None'): return redirect('/login')
     if request.method == 'GET': resp = render_template('login/logout.html')
     else:
         resp = make_response(redirect('/login'))
@@ -71,7 +89,7 @@ def logout():
 @app.route('/create', methods = ('GET', 'POST'))
 def create():
     user = session.get('user')
-    if not (user == None): return redirect('/')
+    if not (user == None or user == 'None'): return redirect('/')
     type_account = session.get('type_account')
     if request.method == 'GET' and type_account == None:
         resp = make_response(render_template('login/set_type_account.html'))
@@ -91,6 +109,7 @@ def create():
         else: resp = 'algo deu errado :/'
     return resp
 
+#rotas para retono de conteudo
 @app.route('/js/<path:path>')
 def send_js(path):
 	return send_from_directory('static/js', path)
