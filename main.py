@@ -8,6 +8,7 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 user = functions.user_db()
 data_base = db.Data_Base(user[0], user[1])
+data_base.return_classroom()
 
 #Rotas principais
 @app.route('/')
@@ -15,7 +16,7 @@ def index():
     user = session.get('user')
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
-    if user == None or user == 'None' or user == 'None': resp = make_response(redirect('/login'))
+    if data_base.user_exist(user): resp = make_response(redirect('/login'))
     else: resp = make_response(render_template('index.html', name = name, type_account = type_account, user = user))
     return resp
 
@@ -27,7 +28,10 @@ def painel():
     if request.method == 'GET':
         if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name))
         elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name))
-        elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name, alunos = data_base.request_studanst()))
+        elif type_account == 'Administrador':
+            studants = data_base.return_studanst()
+            classroom = data_base.return_classroom()
+            resp = make_response(render_template('panel/adm_panel.html', name = name, quan = len(studants), studants = studants, classroom = classroom))
         else: resp = 'ainda não'
     return resp
 
@@ -35,7 +39,7 @@ def painel():
 def config():
     user = session.get('user')
     type_account = data_base.get_type_account(user)
-    if user == None or user == 'None' or user == 'None': resp = make_response(redirect('/login'))
+    if data_base.user_exist(user): resp = make_response(redirect('/login'))
     elif type_account == 'Professor':resp = make_response(render_template('config/teacher_config.html'))
     else: resp = 'não sei :('
     return resp

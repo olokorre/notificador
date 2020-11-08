@@ -15,12 +15,10 @@
             <th>Nome</th>
             <th>Turma</th>
         </tr>
-        {% for i in alunos %}
+        {% for i in range(quan) %}
         <tr>
-            {% for l in i %}
-            <td>{{l}}</td>
-            <td>{{l}}</td>
-            {% endfor %}
+            <td>{{studants[i]}}</td>
+            <td>{{classroom[i]}}</td>
         </tr>
         {% endfor %}
     </table>
