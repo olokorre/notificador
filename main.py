@@ -31,7 +31,8 @@ def painel():
         elif type_account == 'Administrador':
             studants = data_base.return_studanst()
             classroom = data_base.return_classroom()
-            resp = make_response(render_template('panel/adm_panel.html', name = name, quan = len(studants), studants = studants, classroom = classroom))
+            class__ = data_base.whats_class(studants, classroom)
+            resp = make_response(render_template('panel/adm_panel.html', name = name, quan = len(studants), studants = studants, classroom = class__))
         else: resp = 'ainda não'
     return resp
 
@@ -44,9 +45,13 @@ def config():
     else: resp = 'não sei :('
     return resp
 
-@app.route('/classroom_config')
+@app.route('/class')
 def classroom_config():
-    return 'gerir alunos'
+    user = session.get('user')
+    if data_base.get_type_account(user) != "Administrador": resp = make_response(redirect('/'))
+    else:
+        if request.method == 'GET': resp = make_response(render_template('config/class_config.html'))
+    return resp
 
 #rotas websocket
 @socketio.on('joined')

@@ -24,6 +24,16 @@ class Data_Base(object):
             if list_users[i] == user and list_passwd[i] == passwd: return True
         return False
 
+    def whats_class(self, studant, classroom):
+        class__ = []
+        for i in range(len(classroom)):
+            studants = []
+            self.mycursor.execute('select studant from %s' %(classroom[i]))
+            for l in self.mycursor: studants.append(l[0])
+            if studant in studants: class__.append(classroom[i])
+            else: class__.append('N/A')
+        return class__
+
     def user_exist(self, user):
         list_users = []
         self.mycursor.execute('select user from users')
