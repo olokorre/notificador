@@ -6,17 +6,14 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
     <script src='/js/chat.js'></script>
-    <title>Painel do Administrador - Notificador</title>
+    <title>Configurações - Notificador</title>
 </head>
-<body>  
-    <h1>Bem vindo {{name}}!</h1>
-    <a href='/'><button>Voltar</button></a>
-    <a href='/configure-class'><button>Configurar turmas</button></a>
-    <a href='/add-studants-to-class'><button>Alunos Sem turmas</button></a>
-    <p>Qual turma deseja vizualizar?</p>
-    {% for i in class_ %}
-    <a href='view/{{i}}'><button>{{i}}</button></a>
+<body>
+    <h1>Selecione a turma que deseja alterar:</h1>
+    {% for i in classroom %}
+    <a href='/configure/{{i}}'><button>{{i}}</button></a>
     {% endfor %}
+    <a href='/panel'><button>Voltar</button></a>
     <div name='chat'>
         <h3>Chat</h3>
         <textarea id="chat" cols="80" rows="20"></textarea><br><br>

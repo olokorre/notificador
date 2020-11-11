@@ -24,21 +24,10 @@ class Data_Base(object):
             if list_users[i] == user and list_passwd[i] == passwd: return True
         return False
 
-    def whats_class(self, studant, classroom):
-        class__ = []
-        for i in range(len(classroom)):
-            studants = []
-            self.mycursor.execute('select studant from %s' %(classroom[i]))
-            for l in self.mycursor: studants.append(l[0])
-            if studant in studants: class__.append(classroom[i])
-            else: class__.append('N/A')
-        return class__
-
     def user_exist(self, user):
         list_users = []
         self.mycursor.execute('select user from users')
-        for i in self.mycursor:
-            list_users.append(i[0])
+        for i in self.mycursor: list_users.append(i[0])
         if user in list_users: return False
         else: return True
 
@@ -75,6 +64,19 @@ class Data_Base(object):
             menssage += '%s\n' %(i)
         return menssage
 
+    def configure_classroom(self, studant, class_):
+        classroom = self.return_classroom()
+        for i in classroom: self.mycursor.execute('delete from %s where studant = "%s"' %(i, studant))
+        self.mycursor.execute('insert into %s (studant, N1, N2, N3) values ("%s", 0, 0, 0)' %(class_, studant))
+        self.mydb.commit()
+
+    def return_studants_by_class(self, class_):
+        studants = []
+        self.mycursor.execute('select studant from %s' %(class_))
+        for i in self.mycursor: studants.append(i[0])
+        studants.sort()
+        return studants
+
     def return_studanst(self):
         name = []
         type_account = []
@@ -86,14 +88,23 @@ class Data_Base(object):
         name.sort()
         return name
 
-    def configure_classroom(self, studant, class_):
-        pass
-
     def return_classroom(self):
         self.mycursor.execute('select class_ from classroom')
         classroom = []
         for i in self.mycursor: classroom.append(i[0])
         return classroom
+
+    def return_studants_to_fix(self):
+        studants = self.return_studanst()
+        studants_in_class = []
+        studants_to_fix = []
+        for i in self.return_classroom():
+            self.mycursor.execute('select studant from %s' %(i))
+            for i in self.mycursor: studants_in_class.append(i[0])
+        for i in studants:
+            if not i in studants_in_class: studants_to_fix.append(i)
+        studants_to_fix.sort()
+        return studants_to_fix
 
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")

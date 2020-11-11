@@ -24,3 +24,5 @@ $(document).ready(function(){
         }
     });
 });
+
+function clean_input(name) { document.getElementsByName(name).value = ''; }

@@ -10,13 +10,23 @@
 </head>
 <body>  
     <h1>Bem vindo {{name}}!</h1>
-    <a href='/'><button>Voltar</button></a>
-    <a href='/configure-class'><button>Configurar turmas</button></a>
-    <a href='/add-studants-to-class'><button>Alunos Sem turmas</button></a>
-    <p>Qual turma deseja vizualizar?</p>
-    {% for i in class_ %}
-    <a href='view/{{i}}'><button>{{i}}</button></a>
-    {% endfor %}
+    <p>Aqui estão os alunos da turma {{class_}}:</p>
+    {% if studants == [] %}
+    <p>Nenhum estudante está cadastrado nessa turma</p>
+    {% else %}
+    <table>
+        <tr style='background-color: rgb(182, 182, 182);'>
+            <th>Nome</th>
+        </tr>
+        {% for i in studants %}
+        <tr>
+            <td>{{i}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <a href='/configure/{{class_}}'><button>Configurar a turma</button></a>
+    <a href='/panel'><button>Voltar</button></a>
     <div name='chat'>
         <h3>Chat</h3>
         <textarea id="chat" cols="80" rows="20"></textarea><br><br>

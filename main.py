@@ -14,11 +14,21 @@ data_base.return_classroom()
 @app.route('/')
 def index():
     user = session.get('user')
-    name = data_base.get_name(user)
-    type_account = data_base.get_type_account(user)
     if data_base.user_exist(user): resp = make_response(redirect('/login'))
-    else: resp = make_response(render_template('index.html', name = name, type_account = type_account, user = user))
+    else:
+        name = data_base.get_name(user)
+        type_account = data_base.get_type_account(user)
+        resp = make_response(render_template('index.html', name = name, type_account = type_account, user = user))
     return resp
+
+# @app.route('/config', methods = ('GET', 'POST'))
+# def config():
+#     user = session.get('user')
+#     type_account = data_base.get_type_account(user)
+#     if data_base.user_exist(user): resp = make_response(redirect('/login'))
+#     elif type_account == 'Professor':resp = make_response(render_template('config/teacher_config.html'))
+#     else: resp = 'não sei :('
+#     return resp
 
 @app.route('/panel', methods = ('GET', 'POST'))
 def painel():
@@ -28,29 +38,61 @@ def painel():
     if request.method == 'GET':
         if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name))
         elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name))
-        elif type_account == 'Administrador':
-            studants = data_base.return_studanst()
-            classroom = data_base.return_classroom()
-            class__ = data_base.whats_class(studants, classroom)
-            resp = make_response(render_template('panel/adm_panel.html', name = name, quan = len(studants), studants = studants, classroom = class__))
+        elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name, class_ = data_base.return_classroom()))
         else: resp = 'ainda não'
     return resp
 
-@app.route('/config')
-def config():
+@app.route('/view/<path:path>')
+def view(path):
     user = session.get('user')
-    type_account = data_base.get_type_account(user)
-    if data_base.user_exist(user): resp = make_response(redirect('/login'))
-    elif type_account == 'Professor':resp = make_response(render_template('config/teacher_config.html'))
-    else: resp = 'não sei :('
+    if not path in data_base.return_classroom(): resp = make_response(redirect('/'))
+    elif data_base.get_type_account(user) != 'Administrador': resp = make_response(redirect('/'))
+    else:
+        name = data_base.get_name(user)
+        studants = data_base.return_studants_by_class(path)
+        resp = make_response(render_template('/panel/view_class.html', name = name, class_ = path, studants = studants))
     return resp
 
-@app.route('/class')
-def classroom_config():
+@app.route('/add-studants-to-class', methods = ('GET', 'POST'))
+def add_studant_to_class():
+    user = session.get('user')
+    if data_base.get_type_account(user) != "Administrador": resp = make_response(redirect('/'))
+    elif request.method == 'GET':
+        studants = data_base.return_studants_to_fix()
+        class_ = data_base.return_classroom()
+        resp = make_response(render_template('config/fix_studants.html', studants = studants, class_ = class_))
+    elif request.method == 'POST':
+        classroom = data_base.return_classroom()
+        for i in data_base.return_studants_to_fix():
+            class_ = request.form['%s' %(i)]
+            if class_ in classroom: data_base.configure_classroom(i, class_)
+            resp = make_response(redirect('/panel'))
+    return resp
+
+@app.route('/configure-class')
+def configure_class():
     user = session.get('user')
     if data_base.get_type_account(user) != "Administrador": resp = make_response(redirect('/'))
     else:
-        if request.method == 'GET': resp = make_response(render_template('config/class_config.html'))
+        classroom = data_base.return_classroom()
+        resp = make_response(render_template('config/select_class.html', classroom = classroom))
+    return resp
+
+@app.route('/configure/<path:path>', methods = ('GET', 'POST'))
+def configure(path):
+    user = session.get('user')
+    if not path in data_base.return_classroom(): resp = make_response(redirect('/'))
+    elif data_base.get_type_account(user) != "Administrador": resp = make_response(redirect('/'))
+    elif request.method == 'GET':
+        studants = data_base.return_studants_by_class(path)
+        classroom = data_base.return_classroom()
+        resp = make_response(render_template('config/class_config.html', studants = studants, class_ = path, classroom = classroom))
+    elif request.method == 'POST':
+        classroom = data_base.return_classroom()
+        for i in data_base.return_studants_by_class(path):
+            class_ = request.form['%s' %(i)]
+            if class_ in classroom: data_base.configure_classroom(i, class_)
+            resp = make_response(redirect('/panel'))
     return resp
 
 #rotas websocket

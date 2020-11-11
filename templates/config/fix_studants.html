@@ -6,13 +6,13 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
     <script src='/js/chat.js'></script>
-    <title>Configurações - Notificador</title>
+    <title>Painel do Administrador - Notificador</title>
 </head>
-<body>
+<body>  
     {% if studants == [] %}
-    <h1>Não há alunos nesta turma!</h1>
+    <h1>Todos os alunos estão devidamente cadastrados!</h1>
     {% else %}
-    <h1>Insira as turmas para cada aluno registrado na plataforma:</h1>
+    <h1>Insira os alunos abaixo nas turmas:</h1>
     <form method='POST'>
         <table>
             <tr style='background-color: rgb(182, 182, 182);'>
@@ -23,9 +23,9 @@
             <tr>
                 <td>{{i}}</td>
                 <td>
-                    <input value='{{class_}}' name='{{i}}' list='{{i}}'>
+                    <input name='{{i}}' list='{{i}}'>
                     <datalist id='{{i}}'>
-                        {% for l in classroom %}
+                        {% for l in class_ %}
                         <option value='{{l}}'>
                         {% endfor %}
                     </datalist>
@@ -36,7 +36,7 @@
         <input type='submit' value='Salvar' />
     </form>
     {% endif %}
-    <a href='/configure-class'><button>Voltar</button></a>
+    <a href='/panel'><button>Voltar</button></a>
     <div name='chat'>
         <h3>Chat</h3>
         <textarea id="chat" cols="80" rows="20"></textarea><br><br>
