@@ -10,7 +10,10 @@
 </head>
 <body>
     <h1>Bem vindo Professor {{name}}!</h1>
-    <p>Aqui você pode ver os seus alunos e mudar a nota deles... :)</p>
+    <p>Selecione a turma que deseja alterar:</p>
+    {% for i in classroom %}
+    <a href='/grades/{{i}}'><button>{{i}}</button></a>
+    {% endfor %}
     <a href='/'><button>Voltar</button></a>
     <div name='chat'>
         <h3>Chat</h3>

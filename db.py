@@ -115,7 +115,7 @@ class Data_Base(object):
         studants_to_fix.sort()
         return studants_to_fix
     
-    def return_grades(self, studant):
+    def return_grades_to_studant(self, studant):
         class_ = self.return_class_by_studant(studant)
         if class_ == '': return []
         else:

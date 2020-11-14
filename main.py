@@ -27,8 +27,8 @@ def painel():
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
     if request.method == 'GET':
-        if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name))
-        elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name, grades = data_base.return_grades(name)))
+        if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name, classroom = data_base.return_classroom()))
+        elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name, grades = data_base.return_grades_to_studant(name)))
         elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name, class_ = data_base.return_classroom()))
         else: resp = 'ainda não'
     return resp
@@ -86,6 +86,10 @@ def configure(path):
             resp = make_response(redirect('/panel'))
     return resp
 
+@app.route('/grades/<path:path>', methods = ('GET', 'POST'))
+def grade(path):
+    return 'calma'
+
 #rotas websocket
 @socketio.on('joined')
 def joined(message):
@@ -120,35 +124,56 @@ def login():
 @app.route('/logout', methods = ('GET', 'POST'))
 def logout():
     user = session.get('user')
-    if (user == None or user == 'None'): return redirect('/login')
-    if request.method == 'GET': resp = render_template('login/logout.html')
+    if (user == None or user == 'None'): resp = make_response(redirect('/login'))
+    elif request.method == 'GET': resp = make_response(render_template('login/logout.html'))
     else:
         resp = make_response(redirect('/login'))
         session['user'] = None
-        session['type_account'] = None
+        # session['type_account'] = None
     return resp
 
-@app.route('/create', methods = ('GET', 'POST'))
-def create():
+# @app.route('/create', methods = ('GET', 'POST'))
+# def create():
+#     user = session.get('user')
+#     if not (user == None or user == 'None'): return redirect('/')
+#     type_account = session.get('type_account')
+#     if request.method == 'GET' and type_account == None:
+#         resp = make_response(render_template('login/set_type_account.html'))
+#     elif request.method == 'POST' and type_account == None:
+#         type_account = request.form['type-account']
+#         resp = make_response(redirect('/create'))
+#         session['type_account'] = type_account
+#     elif request.method == 'GET' and not type_account == None:
+#         resp = make_response(render_template('login/create_credentials.html', type_account = type_account))
+#     else:
+#         user = request.form['user']
+#         name = request.form['real_name']
+#         passwd = request.form['passwd']
+#         if data_base.create_user(user, name, passwd, type_account):
+#             resp = make_response(redirect('/'))
+#             session['user'] = user
+#         else: resp = 'algo deu errado :/'
+#     return resp
+
+@app.route('/sign-up', methods = ('GET', 'POST'))
+def sign_up():
     user = session.get('user')
     if not (user == None or user == 'None'): return redirect('/')
-    type_account = session.get('type_account')
-    if request.method == 'GET' and type_account == None:
-        resp = make_response(render_template('login/set_type_account.html'))
-    elif request.method == 'POST' and type_account == None:
-        type_account = request.form['type-account']
-        resp = make_response(redirect('/create'))
-        session['type_account'] = type_account
-    elif request.method == 'GET' and not type_account == None:
-        resp = make_response(render_template('login/create_credentials.html', type_account = type_account))
+    elif request.method == 'GET': resp = make_response(render_template('login/create_credentials.html'))
     else:
+        users = []
         user = request.form['user']
         name = request.form['real_name']
         passwd = request.form['passwd']
+        data_base.mycursor.execute('select user from users')
+        for i in data_base.mycursor: users.append(i[0])
+        if len(users) == len([]): type_account = 'Administrador'
+        elif len(users) == len(['hmm']): type_account = 'Professor'
+        else: type_account = 'Aluno'
         if data_base.create_user(user, name, passwd, type_account):
-            resp = make_response(redirect('/'))
             session['user'] = user
-        else: resp = 'algo deu errado :/'
+            resp = make_response(redirect('/'))
+        else: resp = 'Usuário já existe...'
     return resp
 
 #rotas para retono de conteudo
