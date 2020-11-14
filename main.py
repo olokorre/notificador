@@ -21,15 +21,6 @@ def index():
         resp = make_response(render_template('index.html', name = name, type_account = type_account, user = user))
     return resp
 
-# @app.route('/config', methods = ('GET', 'POST'))
-# def config():
-#     user = session.get('user')
-#     type_account = data_base.get_type_account(user)
-#     if data_base.user_exist(user): resp = make_response(redirect('/login'))
-#     elif type_account == 'Professor':resp = make_response(render_template('config/teacher_config.html'))
-#     else: resp = 'não sei :('
-#     return resp
-
 @app.route('/panel', methods = ('GET', 'POST'))
 def painel():
     user = session.get('user')
@@ -37,7 +28,7 @@ def painel():
     type_account = data_base.get_type_account(user)
     if request.method == 'GET':
         if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name))
-        elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name))
+        elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name, grades = data_base.return_grades(name)))
         elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name, class_ = data_base.return_classroom()))
         else: resp = 'ainda não'
     return resp

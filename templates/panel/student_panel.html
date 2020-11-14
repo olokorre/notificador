@@ -10,7 +10,24 @@
 </head>
 <body>  
     <h1>Bem vindo {{name}}!</h1>
-    <p>Aqui ficam as suas notas</p>
+    {% if grades == [] %}
+    <p>Você não está cadastrado em uma turma, contate um adiministrador do sistema.</p>
+    {% else %}
+    <table>
+        <tr style='background-color: rgb(182, 182, 182);'>
+            <th>Nome</th>
+            <th>Nota 1</th>
+            <th>Nota 2</th>
+            <th>Nota 3</th>
+        </tr>
+        <tr>
+            <td>{{grades[0]}}</td>
+            <td>{{grades[1]}}</td>
+            <td>{{grades[2]}}</td>
+            <td>{{grades[3]}}</td>
+        </tr>
+        {% endif %}
+    </table>
     <a href='/'><button>Voltar</button></a>
     <div name='chat'>
         <h3>Chat</h3>
