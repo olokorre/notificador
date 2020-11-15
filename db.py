@@ -119,11 +119,15 @@ class Data_Base(object):
         class_ = self.return_class_by_studant(studant)
         if class_ == '': return []
         else:
-            grades = []
             self.mycursor.execute('select * from %s' %(class_))
             for i in self.mycursor:
                 if studant == i[0]: grades = [i[0], i[1], i[2], i[3]]
             return grades
+    def return_grades_to_teacher(self, class_):
+        grades = []
+        self.mycursor.execute('select * from %s' %(class_))
+        for i in self.mycursor: grades.append([i[0], i[1], i[2], i[3]])
+        return grades
 
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")

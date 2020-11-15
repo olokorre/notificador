@@ -88,7 +88,17 @@ def configure(path):
 
 @app.route('/grades/<path:path>', methods = ('GET', 'POST'))
 def grade(path):
-    return 'calma'
+    user = session.get('user')
+    if data_base.get_type_account(user) != 'Professor' or path not in data_base.return_classroom() : resp = make_response(redirect('/'))
+    elif request.method == 'GET': resp = make_response(render_template('config/grades.html', class_ = path, grades = data_base.return_grades_to_teacher(path)))
+    else:
+        for i in data_base.return_studants_by_class(path):
+            for l in range(1, 4):
+                grade = request.form['%s' %(i + 'N' + str(l))]
+                data_base.mycursor.execute('update %s set N%s = %s where studant = "%s"' %(path, l, grade, i))
+        data_base.mydb.commit()
+        resp = make_response(redirect('/panel'))
+    return resp
 
 #rotas websocket
 @socketio.on('joined')
@@ -129,31 +139,7 @@ def logout():
     else:
         resp = make_response(redirect('/login'))
         session['user'] = None
-        # session['type_account'] = None
     return resp
-
-# @app.route('/create', methods = ('GET', 'POST'))
-# def create():
-#     user = session.get('user')
-#     if not (user == None or user == 'None'): return redirect('/')
-#     type_account = session.get('type_account')
-#     if request.method == 'GET' and type_account == None:
-#         resp = make_response(render_template('login/set_type_account.html'))
-#     elif request.method == 'POST' and type_account == None:
-#         type_account = request.form['type-account']
-#         resp = make_response(redirect('/create'))
-#         session['type_account'] = type_account
-#     elif request.method == 'GET' and not type_account == None:
-#         resp = make_response(render_template('login/create_credentials.html', type_account = type_account))
-#     else:
-#         user = request.form['user']
-#         name = request.form['real_name']
-#         passwd = request.form['passwd']
-#         if data_base.create_user(user, name, passwd, type_account):
-#             resp = make_response(redirect('/'))
-#             session['user'] = user
-#         else: resp = 'algo deu errado :/'
-#     return resp
 
 @app.route('/sign-up', methods = ('GET', 'POST'))
 def sign_up():
