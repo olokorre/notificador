@@ -77,6 +77,15 @@ class Data_Base(object):
         studants.sort()
         return studants
 
+    def return_class_by_studant(self, studant):
+        classroom = self.return_classroom()
+        for i in classroom:
+            studants = []
+            self.mycursor.execute('select studant from %s' %(i))
+            for l in self.mycursor: studants.append(l[0])
+            if studant in studants: return i
+        return ''
+
     def return_studanst(self):
         name = []
         type_account = []
@@ -105,6 +114,20 @@ class Data_Base(object):
             if not i in studants_in_class: studants_to_fix.append(i)
         studants_to_fix.sort()
         return studants_to_fix
+    
+    def return_grades_to_studant(self, studant):
+        class_ = self.return_class_by_studant(studant)
+        if class_ == '': return []
+        else:
+            self.mycursor.execute('select * from %s' %(class_))
+            for i in self.mycursor:
+                if studant == i[0]: grades = [i[0], i[1], i[2], i[3]]
+            return grades
+    def return_grades_to_teacher(self, class_):
+        grades = []
+        self.mycursor.execute('select * from %s' %(class_))
+        for i in self.mycursor: grades.append([i[0], i[1], i[2], i[3]])
+        return grades
 
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")

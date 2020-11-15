@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src='/js/chat.js'></script>
+    <style>
+        .grade { width: 45px; }
+    </style>
+    <title>Modificar notas - Notificador</title>
+</head>
+<body>
+    {% if grades == [] %}
+    <h1>Essa turma não tem alunos, contate um administrador!</h1>
+    {% else %}
+    <h1>Modifique as notas a turma {{class_}}</h1>
+    <form method='POST'>
+        <table>
+            <tr style='background-color: rgb(182, 182, 182);'>
+                <th>Nome</th>
+                {% for i in range(3) %}
+                <th>Nota {{i + 1}}</th>
+                {% endfor %}
+            </tr>
+            {% for i in grades %}
+            <tr>
+                <td>{{i[0]}}</td>
+                {% for l in range(1, 4) %}
+                <td><input class='grade' name='{{i[0] + "N%s" % l}}' value='{{i[l]}}' type='number' /></td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        <input value='Salvar' type='submit' />
+    </form>
+    {% endif %}
+    <a href='/panel'><button>Voltar</button></a>
+    <div name='chat'>
+        <h3>Chat</h3>
+        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
+        <input id="text" size="80" placeholder="Digite sua mensagem"><br><br>
+    </div>
+</body>
+</html>
