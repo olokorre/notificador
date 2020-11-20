@@ -118,9 +118,15 @@ def create_questionnaires():
 @app.route('/questionnaires/<path:path>', methods = ('GET', 'POST'))
 def questionnaires(path):
     user = session.get('user')
-    if not data_base.is_questionnaires(path): resp = make_response(redirect('/')) 
+    if not data_base.is_questionnaires(path): resp = make_response(redirect('/'))
     elif data_base.get_type_account(user) == 'Professor': resp = make_response(render_template('/questionnaires/edit_quiz.html'))
     return resp
+
+@app.route('/questionnaires/delete/<path:path>', methods = ('GET','POST'))
+def delete_questionnaires(path):
+    user = session.get('user')
+    if data_base.get_type_account(user) == "Professor" and data_base.is_questionnaires(path): data_base.delete_quiz(path)
+    return redirect('/panel')
 
 #rotas websocket
 @socketio.on('joined')

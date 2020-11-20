@@ -150,6 +150,11 @@ class Data_Base(object):
         if id_ in questionnaires: return True
         else: return False
 
+    def delete_quiz(self, quiz):
+        self.mycursor.execute('delete from questionnaires where id = "%s"' %(quiz))
+        self.mycursor.execute('drop table %s' %(quiz))
+        self.mydb.commit()
+
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
     passwd = input("Senha do usuario MySQL\n$ ")

@@ -22,6 +22,7 @@
     {% else %}
     {% for i in questionnaires %}
     <p><a style='color: black' href='questionnaires/{{i[0]}}'><h3>{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
+    <a href='/questionnaires/delete/{{i[0]}}'><button>Deletar</button></a><br />
     {% endfor %}
     {% endif %}
     <a href='/questionnaires'><button>Criar questionário</button></a>
