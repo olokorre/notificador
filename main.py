@@ -27,10 +27,13 @@ def painel():
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
     if request.method == 'GET':
-        if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', name = name, classroom = data_base.return_classroom()))
+        if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', questionnaires = data_base.list_questionnaires(), name = name, classroom = data_base.return_classroom()))
         elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name, grades = data_base.return_grades_to_studant(name)))
         elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name, class_ = data_base.return_classroom()))
         else: resp = 'ainda não'
+    # elif request.method == 'POST':
+    #     if not type_account == 'Professor': resp = make_response(redirect('/'))
+    #     else: resp = request.form['form_name']
     return resp
 
 @app.route('/view/<path:path>')
@@ -98,6 +101,25 @@ def grade(path):
                 data_base.mycursor.execute('update %s set N%s = %s where studant = "%s"' %(path, l, grade, i))
         data_base.mydb.commit()
         resp = make_response(redirect('/panel'))
+    return resp
+
+@app.route('/questionnaires', methods = ('GET', 'POST'))
+def create_questionnaires():
+    user = session.get('user')
+    if data_base.get_type_account(user) != 'Professor': resp = make_response(redirect('/'))
+    elif request.method == 'GET': resp = make_response(render_template('/questionnaires/new.html'))
+    elif request.method == 'POST':
+        name_form = request.form['name_form']
+        id_form = functions.md5_hash(name_form)
+        if data_base.create_quiz(name_form, id_form): resp = make_response(redirect('/questionnaires/%s' %(id_form)))
+        else: resp = make_response(redirect('/'))
+    return resp
+
+@app.route('/questionnaires/<path:path>', methods = ('GET', 'POST'))
+def questionnaires(path):
+    user = session.get('user')
+    if not data_base.is_questionnaires(path): resp = make_response(redirect('/')) 
+    elif data_base.get_type_account(user) == 'Professor': resp = make_response(render_template('/questionnaires/edit_quiz.html'))
     return resp
 
 #rotas websocket

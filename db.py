@@ -129,6 +129,27 @@ class Data_Base(object):
         for i in self.mycursor: grades.append([i[0], i[1], i[2], i[3]])
         return grades
 
+    def create_quiz(self, name, id_):
+        try:
+            self.mycursor.execute('insert into questionnaires (id, name, detais) values ("%s", "%s", "Novo questionário")' %(id_, name))
+            self.mycursor.execute('create table %s (position int(2) primary key, question varchar(191), type varchar(50), options varchar(191))' %(id_))
+            self.mydb.commit()
+            return True
+        except: return False
+
+    def list_questionnaires(self):
+        questionnaires = []
+        self.mycursor.execute('select * from questionnaires')
+        for i in self.mycursor: questionnaires.append([i[0], i[1], i[2]])
+        return questionnaires
+
+    def is_questionnaires(self, id_):
+        questionnaires = []
+        self.mycursor.execute('select id from questionnaires')
+        for i in self.mycursor: questionnaires.append(i[0])
+        if id_ in questionnaires: return True
+        else: return False
+
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
     passwd = input("Senha do usuario MySQL\n$ ")
@@ -142,6 +163,7 @@ if __name__ == "__main__":
     for turma in range(3):
         mycursor.execute('insert into classroom (class_) values ("%sF")' %(turma + 1))
         mycursor.execute('create table %sF (studant varchar(80) primary key, N1 int(2), N2 int(2), N3 int(2))' %(turma + 1))
+    mycursor.execute('create table questionnaires (id varchar(50) primary key, name varchar(80), detais varchar(100))')
     mydb.commit()
     functions.register_db(user, passwd)
     print('Tudo em dia!')
