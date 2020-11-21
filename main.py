@@ -30,10 +30,7 @@ def painel():
         if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', questionnaires = data_base.list_questionnaires(), name = name, classroom = data_base.return_classroom()))
         elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name, grades = data_base.return_grades_to_studant(name)))
         elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name, class_ = data_base.return_classroom()))
-        else: resp = 'ainda não'
-    # elif request.method == 'POST':
-    #     if not type_account == 'Professor': resp = make_response(redirect('/'))
-    #     else: resp = request.form['form_name']
+        else: resp = make_response(redirect('/'))
     return resp
 
 @app.route('/view/<path:path>')
@@ -119,7 +116,14 @@ def create_questionnaires():
 def questionnaires(path):
     user = session.get('user')
     if not data_base.is_questionnaires(path): resp = make_response(redirect('/'))
-    elif data_base.get_type_account(user) == 'Professor': resp = make_response(render_template('/questionnaires/edit_quiz.html'))
+    elif data_base.get_type_account(user) == 'Professor':
+        if request.method == 'GET':
+            data = data_base.get_data_by_quiz(path)
+            resp = make_response(render_template('/questionnaires/edit_quiz.html', name = data[0][0], detais = data[0][1]))
+        else:
+            detais = request.form['detais']
+            data_base.save_data_by_quiz(path, detais)
+            resp = redirect('/questionnaires/%s' %(path))
     return resp
 
 @app.route('/questionnaires/delete/<path:path>', methods = ('GET','POST'))

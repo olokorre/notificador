@@ -155,6 +155,17 @@ class Data_Base(object):
         self.mycursor.execute('drop table %s' %(quiz))
         self.mydb.commit()
 
+    def get_data_by_quiz(self, quiz):
+        data = []
+        self.mycursor.execute('select * from questionnaires where id = "%s"' %(quiz))
+        for i in self.mycursor: data.append([i[1], i[2], i[3]])
+        self.mycursor.execute('select * from %s' %(quiz))
+        for i in self.mycursor: data.append([i[0], i[1], i[2], i[3]])
+        return data
+
+    def save_data_by_quiz(self, quiz, detais):
+        self.mycursor.execute('update questionnaires set detais = "%s" where id = "%s"' %(detais, quiz))
+
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
     passwd = input("Senha do usuario MySQL\n$ ")
@@ -168,7 +179,7 @@ if __name__ == "__main__":
     for turma in range(3):
         mycursor.execute('insert into classroom (class_) values ("%sF")' %(turma + 1))
         mycursor.execute('create table %sF (studant varchar(80) primary key, N1 int(2), N2 int(2), N3 int(2))' %(turma + 1))
-    mycursor.execute('create table questionnaires (id varchar(50) primary key, name varchar(80), detais varchar(100))')
+    mycursor.execute('create table questionnaires (id varchar(50) primary key, name varchar(80), detais varchar(100), visible varchar(3) default "no")')
     mydb.commit()
     functions.register_db(user, passwd)
     print('Tudo em dia!')

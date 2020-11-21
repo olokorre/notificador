@@ -1,6 +1,1 @@
-// function create_form() {
-//     var name = prompt('Digite o nome do formulário:');
-//     if (name != '') {
-//         document.forms['create']['form_name'].value = name;
-//     } else { return false; }
-// }
+function simple_quest() { html.innerHTML += '<h4 id="question'+ position.toString() +'">'+ position.toString() +' - <input size="80" name="question'+ position.toString() +'" /><input name="type'+ position.toString() +'" type="hidden" value="simple" /></h4>'; position++; }

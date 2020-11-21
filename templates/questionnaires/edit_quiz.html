@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{name}} - Notificador</title>
+    <script src='/js/questionnaries.js'></script>
 </head>
 <body>
+    <h1>Editar o questionário {{name}}</h1>
     <form method='POST'>
-        <p>Nada...</p>
+        <h2>Descrição: <input name='detais' type='text' value='{{detais}}' /></h2>
+        <div id='main'>
+            <script>
+                var html = document.getElementById('main');
+                var position = 1;
+            </script>
+        </div>
+        <input type='submit' value='Salvar' />
     </form>
+    <button onclick="simple_quest()">Adicionar resposta simples</button>
     <a href='/panel'><button>Voltar</button></a>
 </body>
 </html>
