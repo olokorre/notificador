@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="/css/login.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entre com sua conta! - Notificador</title>
 </head>
 <body>
-    <h1>Digite suas credenciais</h1>
-    <form method="POST">
-        <p>Nome de usuario: <input required name='user' /></p>
-        <p>Senha: <input required name='passwd' type='password' /></p>
-        <input type='submit' value='Entrar' />
-    </form>
-    <a href='/sign-up'><button>Registrar-se</button></a>
+    <div id="grid-container">
+        <div id="giga_text">
+            <h1>Logue na Plataforma</h1>
+        </div>
+        <div id="sign_in">
+            <h2>Bem Vindo de Volta,</h2>
+                <form method="POST">
+                    <input required name='user' placeholder="Usuário" class="text_input"/>
+                    <input required name='passwd' type='password' placeholder="Senha" class="text_input"/>
+                    <input type='submit' value='Entrar' />
+                </form>
+                <h3>Não tem conta?</h3>
+                <a href='/sign-up'><button>Registrar-se</button></a>
+        </div>
+    </div>
 </body>
 </html>
