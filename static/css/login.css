@@ -7,6 +7,9 @@ h1{
     margin-right: 10%;
     font-size: clamp(35px,5vw,60px); 
 }
+h2{
+    font-size: clamp(20px,2vw,30px);
+}
 .text_input{
     border:none;
     font-size: clamp(15px,1.5vw,25px);
@@ -14,8 +17,20 @@ h1{
     background-color:#131313;
     width: 80%;
     margin-bottom: 5%;
+    height: 20%;
+    border-radius: 5px;    
 }
-
+a{
+    color: #963030;
+}
+.button{
+    font-size: clamp(15px,1.5vw,25px);
+    width: 50%;
+    background-color: #963030; 
+    color: white;
+    border-radius: 5px;
+    border:none;  
+}
 
 #grid-container{
     background-color:#131313;
