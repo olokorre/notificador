@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{name}} - Notificador</title>
+    <!-- <script src='/js/questionnaries.js'></script> -->
+</head>
+<body>
+    <h1>Editar o questionário {{name}}</h1>
+    {% if type_account == "Professor" %}
+    {% if visible == "no" %}
+    <a href='/questionnaires/edit/{{id_}}/yes'><button>Tornar visível</button></a>
+    {% else %}
+    <a href='/questionnaires/edit/{{id_}}/no'><button>Tornar invisível</button></a>
+    {% endif %}
+    {% endif %}
+    <h2>
+        {{detais}} 
+        {% if type_account == "Professor" %}
+        <a href='/questionnaires/edit/{{id_}}/meta'><button>Editar</button></a>
+        {% endif %}
+    </h2>
+    <h2>Perguntas</h2>
+    {% if type_account == "Professor" %}
+    <a href='/questionnaires/edit/{{id_}}/simple'><button>Adicionar perginta de resposta simples</button></a>
+    {% endif %}
+    {% for i in position %}
+    {% if type_[i - 1] == 'simple' %}
+    <h4>
+        {{i}} - {{questions[i - 1]}}
+        {% if type_account == 'Professor' %}
+        <button>Editar</button>
+        {% endif %}
+    </h4>
+    {% if type_account == "Aluno" %}
+    <a href='/questionnaires/question/{{id_}}/{{i}}'><button>Responder</button></a>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    <a href='/panel'><button>Voltar</button></a>
+</body>
+</html>
