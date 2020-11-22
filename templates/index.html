@@ -3,20 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
     <script src='/js/chat.js'></script>
     <title>início - Notificador</title>
 </head>
 <body>
-    <h1>Bem vindo {{name}}!</h1>
-    <!-- <a href='/config'><button>Configurações</button></a> -->
-    <a href='/panel'><button>Painel do {{type_account}}</button></a>
-    <a href='/logout'><button>Sair</button></a>
-    <div name='chat'>
-        <h3>Chat</h3>
-        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
-        <input id="text" size="80" placeholder="Digite sua mensagem"><br><br>
+    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
+        <div id="Flutuante">
+            <h1>Pau no Cu da união flasco</h1>
+        </div>
+    </a>
+    <div id ="grid-container">
+        <div id="home-page">
+            <h1>Bem vindo {{name}}!</h1>
+            <!-- <a href='/config'><button>Configurações</button></a> -->
+            
+            <a href='/panel'><button>Painel do {{type_account}}</button></a>
+            <a href='/logout'><button>Sair</button></a>
+        </div>
+        <div name='chat' id="chat_box">
+            <h3>Chat <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'">Fechar</a></h3>
+
+            <textarea id="chat" cols="50" rows="20"></textarea>
+            <input id="text" placeholder="Digite sua mensagem">
+        </div>
     </div>
 </body>
 </html>
