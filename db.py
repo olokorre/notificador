@@ -130,17 +130,15 @@ class Data_Base(object):
         return grades
 
     def create_quiz(self, name, id_):
-        try:
-            self.mycursor.execute('insert into questionnaires (id, name, detais) values ("%s", "%s", "Novo questionário")' %(id_, name))
-            self.mycursor.execute('create table %s (position int(2) primary key, question varchar(191), type varchar(50), options varchar(191))' %(id_))
-            self.mydb.commit()
-            return True
-        except: return False
+        self.mycursor.execute('insert into questionnaires (id, name, detais) values ("%s", "%s", "Novo questionário")' %(id_, name))
+        self.mycursor.execute('create table detais_%s (position int(2) primary key, question varchar(191), type varchar(50), options varchar(191))' %(id_))
+        self.mycursor.execute('create table resp_%s (id int(5) primary key auto_increment, studant varchar(191), position int(2), resp varchar(191), submit varchar(3) default "no")' %(id_))
+        self.mydb.commit()
 
     def list_questionnaires(self):
         questionnaires = []
         self.mycursor.execute('select * from questionnaires')
-        for i in self.mycursor: questionnaires.append([i[0], i[1], i[2]])
+        for i in self.mycursor: questionnaires.append([i[0], i[1], i[2], i[3]])
         return questionnaires
 
     def is_questionnaires(self, id_):
@@ -152,19 +150,44 @@ class Data_Base(object):
 
     def delete_quiz(self, quiz):
         self.mycursor.execute('delete from questionnaires where id = "%s"' %(quiz))
-        self.mycursor.execute('drop table %s' %(quiz))
+        self.mycursor.execute('drop table detais_%s' %(quiz))
+        self.mycursor.execute('drop table resp_%s' %(quiz))
         self.mydb.commit()
 
     def get_data_by_quiz(self, quiz):
         data = []
         self.mycursor.execute('select * from questionnaires where id = "%s"' %(quiz))
         for i in self.mycursor: data.append([i[1], i[2], i[3]])
-        self.mycursor.execute('select * from %s' %(quiz))
+        self.mycursor.execute('select * from detais_%s' %(quiz))
         for i in self.mycursor: data.append([i[0], i[1], i[2], i[3]])
         return data
 
-    def save_data_by_quiz(self, quiz, detais):
-        self.mycursor.execute('update questionnaires set detais = "%s" where id = "%s"' %(detais, quiz))
+    def save_data_by_quiz(self, quiz, local, data):
+        if local == 'meta':
+            self.mycursor.execute('update questionnaires set detais = "%s" where id = "%s"' %(data, quiz))
+        elif local == 'yes' or local == 'no':
+            self.mycursor.execute('update questionnaires set visible = "%s" where id = "%s"' %(data, quiz))
+        elif local == 'simple':
+            position = []
+            self.mycursor.execute('select position from detais_%s' %(quiz))
+            for i in self.mycursor: position.append(i[0])
+            if position == []: n = 1
+            else: n = int(position[-1]) + 1
+            self.mycursor.execute('insert into detais_%s (position, question, type) values (%s, "%s", "simple")' %(quiz, n, data))
+        self.mydb.commit()
+
+    def save_resp(self, quiz, resp, position, studant):
+        jota = False
+        id_ = ''
+        self.mycursor.execute('select studant, position, id from resp_%s' %(quiz))
+        for i in self.mycursor:
+            print(i[0], studant, i[1], position)
+            if studant == i[0] and str(position) == str(i[1]):
+                jota = True
+                id_ = str(i[2])
+        if jota: self.mycursor.execute('update resp_%s set resp = "%s" where id = "%s"' %(quiz, resp, id_))
+        else: self.mycursor.execute('insert into resp_%s (studant, position, resp) values ("%s", "%s", "%s")' %(quiz, studant, position, resp))
+        self.mydb.commit()
 
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
@@ -179,7 +202,7 @@ if __name__ == "__main__":
     for turma in range(3):
         mycursor.execute('insert into classroom (class_) values ("%sF")' %(turma + 1))
         mycursor.execute('create table %sF (studant varchar(80) primary key, N1 int(2), N2 int(2), N3 int(2))' %(turma + 1))
-    mycursor.execute('create table questionnaires (id varchar(50) primary key, name varchar(80), detais varchar(100), visible varchar(3) default "no")')
+    mycursor.execute('create table questionnaires (id varchar(50) primary key, name varchar(191), detais varchar(191), visible varchar(3) default "no")')
     mydb.commit()
     functions.register_db(user, passwd)
     print('Tudo em dia!')

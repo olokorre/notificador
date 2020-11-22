@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{name}} - Notificador</title>
+</head>
+<body>
+    <h1>Editar o questionario {{name}}</h1>
+    <form method='POST'>
+        <h2>Descrição: <input name='detais' type='text' value='{{detais}}' /></h2>
+        <input type='submit' value='Salvar' />
+    </form>
+    <a href='/questionnaires/{{id_}}'><button>Voltar</button></a>
+</body>
+</html>

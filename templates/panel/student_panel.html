@@ -30,7 +30,15 @@
         {% endif %}
     </table>
     <h2>Questionários:</h2>
-    <p>Aqui fica os questionários</p>
+    {% if questionnaires == [] %}
+    <p>Não existem questionário registrados no sistema</p>
+    {% else %}
+    {% for i in questionnaires %}
+    {% if i[3] == 'yes' %}
+    <p><a style='color: black' href='questionnaires/{{i[0]}}'><h3>{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
     <a href='/'><button>Voltar</button></a>
     <div name='chat'>
         <h3>Chat</h3>

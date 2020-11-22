@@ -27,9 +27,32 @@ def painel():
     name = data_base.get_name(user)
     type_account = data_base.get_type_account(user)
     if request.method == 'GET':
-        if type_account == 'Professor': resp = make_response(render_template('panel/teacher_panel.html', questionnaires = data_base.list_questionnaires(), name = name, classroom = data_base.return_classroom()))
-        elif type_account == 'Aluno': resp = make_response(render_template('panel/student_panel.html', name = name, grades = data_base.return_grades_to_studant(name)))
-        elif type_account == 'Administrador': resp = make_response(render_template('panel/adm_panel.html', name = name, class_ = data_base.return_classroom()))
+        if type_account == 'Professor':
+            resp = make_response(
+                render_template(
+                    'panel/teacher_panel.html',
+                    questionnaires = data_base.list_questionnaires(),
+                    name = name,
+                    classroom = data_base.return_classroom()
+                )
+            )
+        elif type_account == 'Aluno':
+            resp = make_response(
+                render_template(
+                    'panel/student_panel.html',
+                    questionnaires = data_base.list_questionnaires(),
+                    name = name,
+                    grades = data_base.return_grades_to_studant(name)
+                )
+            )
+        elif type_account == 'Administrador':
+            resp = make_response(
+                render_template(
+                    'panel/adm_panel.html',
+                    name = name,
+                    class_ = data_base.return_classroom()
+                )
+            )
         else: resp = make_response(redirect('/'))
     return resp
 
@@ -77,7 +100,14 @@ def configure(path):
     elif request.method == 'GET':
         studants = data_base.return_studants_by_class(path)
         classroom = data_base.return_classroom()
-        resp = make_response(render_template('config/class_config.html', studants = studants, class_ = path, classroom = classroom))
+        resp = make_response(
+            render_template(
+                'config/class_config.html',
+                studants = studants,
+                class_ = path,
+                classroom = classroom
+            )
+        )
     elif request.method == 'POST':
         classroom = data_base.return_classroom()
         for i in data_base.return_studants_by_class(path):
@@ -108,22 +138,87 @@ def create_questionnaires():
     elif request.method == 'POST':
         name_form = request.form['name_form']
         id_form = functions.md5_hash(name_form)
-        if data_base.create_quiz(name_form, id_form): resp = make_response(redirect('/questionnaires/%s' %(id_form)))
-        else: resp = make_response(redirect('/'))
+        data_base.create_quiz(name_form, id_form)
+        resp = make_response(redirect('/questionnaires/%s' %(id_form)))
     return resp
 
 @app.route('/questionnaires/<path:path>', methods = ('GET', 'POST'))
 def questionnaires(path):
     user = session.get('user')
+    type_account = data_base.get_type_account(user)
     if not data_base.is_questionnaires(path): resp = make_response(redirect('/'))
-    elif data_base.get_type_account(user) == 'Professor':
+    else:
+        data = data_base.get_data_by_quiz(path)
+        name = data[0][0]
+        detais = data[0][1]
+        visible = data[0][2]
+        del(data[0])
+        resp = make_response(
+            render_template(
+                '/questionnaires/quiz.html',
+                id_ = path,
+                type_account = type_account,
+                name = name,
+                detais = detais,
+                visible = visible,
+                position = list((i[0] for i in data)),
+                questions = list((i[1] for i in data)),
+                type_ = list((i[2] for i in data))
+            )
+        )
+    return resp
+
+@app.route('/questionnaires/edit/<path:path>/<path:local>', methods = ('GET','POST'))
+def edit_questionnaires(path, local):
+    user = session.get('user')
+    data = []
+    if data_base.get_type_account(user) != 'Professor': resp = make_response(redirect('/'))
+    elif not data_base.is_questionnaires(path): resp = make_response(redirect('/'))
+    elif local == 'meta':
         if request.method == 'GET':
             data = data_base.get_data_by_quiz(path)
-            resp = make_response(render_template('/questionnaires/edit_quiz.html', name = data[0][0], detais = data[0][1]))
+            resp = make_response(
+                render_template('/questionnaires/edit_meta.html',
+                id_ = path,
+                name = data[0][0],
+                detais = data[0][1]
+                )
+            )
         else:
-            detais = request.form['detais']
-            data_base.save_data_by_quiz(path, detais)
-            resp = redirect('/questionnaires/%s' %(path))
+            data = request.form['detais']
+            resp = make_response(redirect('/questionnaires/%s' %(path)))
+    elif local == 'simple':
+        if request.method == 'GET': resp = make_response(render_template('/questionnaires/new_question.html'))
+        else:
+            data = request.form['question']
+            resp = make_response(redirect('/questionnaires/%s' %(path)))
+    elif local == 'yes' or local == 'no':
+        data = local
+        resp = resp = make_response(redirect('/questionnaires/%s' %(path)))
+    else: resp = "nada"
+    if request.method == 'POST' or local in ('yes', 'no'): data_base.save_data_by_quiz(path, local, data)
+    return resp
+
+@app.route('/questionnaires/question/<path:path>/<path:position>', methods = ('GET','POST'))
+def edit_questions(path, position):
+    user = session.get('user')
+    resposta = request.args.get('resposta')
+    if resposta == None:
+        data = data_base.get_data_by_quiz(path)
+        name = data[0][0]
+        del(data[0])
+        for i in data:
+            if int(i[0]) == int(position): question = i[1]
+        resp = make_response(
+            render_template(
+                '/questionnaires/simple_question.html',
+                name = name,
+                question = question
+            )
+        )
+    else:
+        data_base.save_resp(path, resposta, position, data_base.get_name(user))
+        resp = make_response(redirect('/questionnaires/%s' %(path)))
     return resp
 
 @app.route('/questionnaires/delete/<path:path>', methods = ('GET','POST'))
