@@ -206,6 +206,7 @@ def edit_questions(path, position):
     if resposta == None:
         data = data_base.get_data_by_quiz(path)
         name = data[0][0]
+        resp_ = data_base.return_resp_by_user(data_base.get_name(user), position, path)
         del(data[0])
         for i in data:
             if int(i[0]) == int(position): question = i[1]
@@ -213,7 +214,8 @@ def edit_questions(path, position):
             render_template(
                 '/questionnaires/simple_question.html',
                 name = name,
-                question = question
+                question = question,
+                resp_ = resp_
             )
         )
     else:

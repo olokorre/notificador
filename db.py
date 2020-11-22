@@ -188,6 +188,13 @@ class Data_Base(object):
         if jota: self.mycursor.execute('update resp_%s set resp = "%s" where id = "%s"' %(quiz, resp, id_))
         else: self.mycursor.execute('insert into resp_%s (studant, position, resp) values ("%s", "%s", "%s")' %(quiz, studant, position, resp))
         self.mydb.commit()
+    
+    def return_resp_by_user(self, user, position, quiz):
+        resp = ''
+        self.mycursor.execute('select resp, position from resp_%s where studant = "%s"' %(quiz, user))
+        for i in self.mycursor:
+            if position == str(i[1]): resp = i[0]
+        return resp
 
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
