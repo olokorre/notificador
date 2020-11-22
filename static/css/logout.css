@@ -1,14 +1,14 @@
 body{
     background-color:#131313;
     text-align: center;
-    color: white;
+    color:white;
 }
 #grid-container{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: repeat(3,1fr);
+    grid-template-areas:"text" "sign_in";
     height: 100vh;
-    column-gap: 2%;
 }
 #main_box{
     border-radius:5px;
@@ -18,24 +18,17 @@ body{
     grid-row-start:2;
     grid-row-end:3;
 }
-.text_input{
-    border:none;
-    font-size: clamp(15px,1.5vw,25px);
-    color: white;
-    background-color:#131313;
-    width: 80%;
-    margin-bottom:3%;
-    border-radius: 5px;
+h1{
+    margin-top: 15%;
+    font-size: clamp(20px,2vw,30px);
 }
-#submit{
+.button{
     font-size: clamp(15px,1.5vw,25px);
     width: 50%;
+    height: 10%;
     background-color: #963030; 
     color: white;
     border-radius: 5px;
     border:none;
     margin-bottom: 5%;  
-}
-h1{
-    font-size: clamp(20px,2vw,30px);
 }

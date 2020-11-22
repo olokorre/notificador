@@ -1,0 +1,35 @@
+body{
+    background-color:#131313;
+    text-align: center;
+    color:white;
+}
+#grid-container{
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 0.5fr;
+    grid-template-rows: repeat(3,1fr);
+    height: 100vh;
+    column-gap: 10%;
+}
+#home-page{
+    background-color: #555;
+    grid-column-start:2;
+    grid-column-end: 4;
+    grid-row-start:2;
+    grid-row-end:3;
+
+}
+#Flutuante{
+    padding: 10px 16px;
+    background-color: #555;
+    color: #f1f1f1;
+    position: fixed;
+    bottom: 0;
+    width: 20%
+  }
+#chat_box{
+    position: fixed;
+    display: none;
+    width: 30%;
+    background-color: aqua;
+    bottom: 0;
+}
