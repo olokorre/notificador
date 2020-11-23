@@ -16,13 +16,13 @@
         <div id ="panel">
             <h1>Bem vindo Professor {{name}}!</h1>
             <h2>Notas</h2>
-            <p>Visualze ou altere as notas dos alunos:</p>
+            <p>Visualize ou altere as notas dos alunos:</p>
             {% for i in classroom %}
             <a href='/grades/{{i}}'><button>{{i}}</button></a>
             {% endfor %}
             <h2>Questionários:</h2>
             {% if questionnaires == [] %}
-            <p>Não existem questionário registrados no sistema</p>
+            <p>Não existe questionário registrado no sistema</p>
             {% else %}
             {% for i in questionnaires %}
             <p><a href='questionnaires/{{i[0]}}'><h3 id="sublinhado">{{i[1]}}</h3></a><p>{{i[2]}}</p></p>

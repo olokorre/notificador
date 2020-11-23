@@ -30,16 +30,13 @@
     </h2>
     <h2>Perguntas</h2>
     {% if type_account == "Professor" %}
-    <a href='/questionnaires/edit/{{id_}}/simple'><button>Adicionar perginta de resposta simples</button></a><br />
-    <a href='/questionnaires/edit/{{id_}}/objetiva'><button>Adicionar perginta de resposta objetiva</button></a>
+    <a href='/questionnaires/edit/{{id_}}/simple'><button>Adicionar pergunta de resposta simples</button></a><br />
+    <a href='/questionnaires/edit/{{id_}}/objetiva'><button>Adicionar pergunta de resposta objetiva</button></a>
     {% endif %}
     {% for i in position %}
     {% if type_[i - 1] == 'simple' %}
     <h4>
         {{i}} - {{questions[i - 1]}}
-        {% if type_account == 'Professor' %}
-        <button>Editar</button>
-        {% endif %}
     </h4>
     {% if type_account == "Aluno" %}
     <a href='/questionnaires/question/{{id_}}/{{i}}'><button>Responder</button></a>
@@ -47,9 +44,6 @@
     {% elif type_[i - 1] == 'objetiva' %}
     <h4>
         {{i}} - {{questions[i - 1]}}
-        {% if type_account == 'Professor' %}
-        <button>Editar</button>
-        {% endif %}
     </h4>
     {% if type_account == "Aluno" %}
     <a href='/questionnaires/objetiva/{{id_}}/{{i}}'><button>Responder</button></a>

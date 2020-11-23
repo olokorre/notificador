@@ -35,7 +35,7 @@
     </div>
     <h2>Questionários:</h2>
     {% if questionnaires == [] %}
-    <p>Não existem questionário registrados no sistema</p>
+    <p>Não existe questionário registrado no sistema</p>
     {% else %}
     {% for i in questionnaires %}
     {% if i[3] == 'yes' and submit[i[4]] == 'no' %}
