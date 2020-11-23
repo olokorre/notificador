@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="/css/student_panel.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
@@ -13,6 +15,8 @@
     {% if grades == [] %}
     <p>Você não está cadastrado em uma turma, contate um adiministrador do sistema.</p>
     {% else %}
+    <div align='center'>
+        <h2>Notas:</h2>
     <table>
         <tr style='background-color: rgb(182, 182, 182);'>
             <th>Nome</th>
@@ -28,11 +32,27 @@
         </tr>
         {% endif %}
     </table>
+    </div>
+    <h2>Questionários:</h2>
+    {% if questionnaires == [] %}
+    <p>Não existem questionário registrados no sistema</p>
+    {% else %}
+    {% for i in questionnaires %}
+    {% if i[3] == 'yes' and submit[i[4]] == 'no' %}
+    <p><a style='color: white' href='questionnaires/{{i[0]}}'><h3>{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
     <a href='/'><button>Voltar</button></a>
-    <div name='chat'>
-        <h3>Chat</h3>
-        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
-        <input id="text" size="80" placeholder="Digite sua mensagem"><br><br>
+    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
+        <div id="show_chat">
+            <h1>Chat</h1>
+        </div>
+    </a>
+     <div name='chat' id="chat_box">
+        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
+        <textarea id="chat" cols="50" rows="20" readonly></textarea>
+        <input id="text" placeholder="Digite sua mensagem">
     </div>
 </body>
 </html>

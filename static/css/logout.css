@@ -1,0 +1,34 @@
+body{
+    background-color:#131313;
+    text-align: center;
+    color:white;
+}
+#grid-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(3,1fr);
+    grid-template-areas:"text" "sign_in";
+    height: 100vh;
+}
+#main_box{
+    border-radius:5px;
+    background-color:#242424;
+    grid-column-start:2;
+    grid-column-end: 3;
+    grid-row-start:2;
+    grid-row-end:3;
+}
+h1{
+    margin-top: 15%;
+    font-size: clamp(20px,2vw,30px);
+}
+.button{
+    font-size: clamp(15px,1.5vw,25px);
+    width: 50%;
+    height: 10%;
+    background-color: #963030; 
+    color: white;
+    border-radius: 5px;
+    border:none;
+    margin-bottom: 5%;  
+}

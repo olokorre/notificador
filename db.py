@@ -129,6 +129,118 @@ class Data_Base(object):
         for i in self.mycursor: grades.append([i[0], i[1], i[2], i[3]])
         return grades
 
+    def create_quiz(self, name, id_):
+        self.mycursor.execute('insert into questionnaires (id, name, detais) values ("%s", "%s", "Novo questionário")' %(id_, name))
+        self.mycursor.execute('create table detais_%s (position int(2) primary key, question varchar(191), type varchar(50), options varchar(191))' %(id_))
+        self.mycursor.execute('create table resp_%s (id int(5) primary key auto_increment, studant varchar(191), position int(2), resp varchar(191))' %(id_))
+        self.mycursor.execute('create table submit_%s (studant varchar(191) primary key)' %(id_))
+        self.mydb.commit()
+
+    def list_questionnaires(self):
+        questionnaires = []
+        self.mycursor.execute('select * from questionnaires')
+        cont = 0
+        for i in self.mycursor:
+            questionnaires.append([i[0], i[1], i[2], i[3], cont])
+            cont += 1
+        return questionnaires
+
+    def is_questionnaires(self, id_):
+        questionnaires = []
+        self.mycursor.execute('select id from questionnaires')
+        for i in self.mycursor: questionnaires.append(i[0])
+        if id_ in questionnaires: return True
+        else: return False
+
+    def delete_quiz(self, quiz):
+        self.mycursor.execute('delete from questionnaires where id = "%s"' %(quiz))
+        self.mycursor.execute('drop table detais_%s' %(quiz))
+        self.mycursor.execute('drop table resp_%s' %(quiz))
+        self.mycursor.execute('drop table submit_%s' %(quiz))
+        self.mydb.commit()
+
+    def get_data_by_quiz(self, quiz):
+        data = []
+        self.mycursor.execute('select * from questionnaires where id = "%s"' %(quiz))
+        for i in self.mycursor: data.append([i[1], i[2], i[3]])
+        self.mycursor.execute('select * from detais_%s' %(quiz))
+        for i in self.mycursor: data.append([i[0], i[1], i[2], i[3]])
+        return data
+    
+    def get_info_objetiva(self, position, quiz):
+        options = []
+        question = ''
+        self.mycursor.execute('select question from detais_%s where position = %s' %(quiz, position))
+        for i in self.mycursor: question = i[0]
+        self.mycursor.execute('select options from detais_%s where position = %s' %(quiz, position))
+        for i in self.mycursor: options = i[0]
+        x = options.split('; ')
+        return [question, x]
+
+    def save_data_by_quiz(self, quiz, local, data):
+        if local == 'meta':
+            self.mycursor.execute('update questionnaires set detais = "%s" where id = "%s"' %(data, quiz))
+        elif local == 'yes' or local == 'no':
+            self.mycursor.execute('update questionnaires set visible = "%s" where id = "%s"' %(data, quiz))
+        elif local == 'simple' or local == 'objetiva':
+            position = []
+            self.mycursor.execute('select position from detais_%s' %(quiz))
+            for i in self.mycursor: position.append(i[0])
+            if position == []: n = 1
+            else: n = int(position[-1]) + 1
+            if local == 'simple': self.mycursor.execute('insert into detais_%s (position, question, type) values (%s, "%s", "simple")' %(quiz, n, data))
+            else: self.mycursor.execute('insert into detais_%s (position, question, type, options) values ("%s", "%s", "objetiva", "%s")' %(quiz, n, data[0], data[1]))
+        self.mydb.commit()
+
+    def save_resp(self, quiz, resp, position, studant):
+        jota = False
+        id_ = ''
+        self.mycursor.execute('select studant, position, id from resp_%s' %(quiz))
+        for i in self.mycursor:
+            print(i[0], studant, i[1], position)
+            if studant == i[0] and str(position) == str(i[1]):
+                jota = True
+                id_ = str(i[2])
+        if jota: self.mycursor.execute('update resp_%s set resp = "%s" where id = "%s"' %(quiz, resp, id_))
+        else: self.mycursor.execute('insert into resp_%s (studant, position, resp) values ("%s", "%s", "%s")' %(quiz, studant, position, resp))
+        self.mydb.commit()
+    
+    def return_resp_by_user(self, user, position, quiz):
+        resp = ''
+        self.mycursor.execute('select resp, position from resp_%s where studant = "%s"' %(quiz, user))
+        for i in self.mycursor:
+            if position == str(i[1]): resp = i[0]
+        return resp
+
+    def return_resp_submit(self, quiz):
+        studants = []
+        self.mycursor.execute('select studant from submit_%s' %(quiz))
+        for i in self.mycursor: studants.append(i[0])
+        return studants
+    
+    def return_resp_by_studant(self, studant, quiz):
+        resps = []
+        self.mycursor.execute('select resp from resp_%s where studant = "%s"' %(quiz, studant))
+        for i in self.mycursor: resps.append(i[0])
+        return resps
+
+    def submit_quiz(self, quiz, studant):
+        self.mycursor.execute('insert into submit_%s (studant) values ("%s")' %(quiz, studant))
+        self.mydb.commit()
+
+    def is_submit(self, studant):
+        submits = []
+        questionnaires = []
+        studants_submit = []
+        self.mycursor.execute('select id from questionnaires')
+        for i in self.mycursor: questionnaires.append(i[0])
+        for i in questionnaires:
+            self.mycursor.execute('select studant from submit_%s' %(i))
+            for l in self.mycursor: studants_submit.append(l[0])
+            if studant in studants_submit: submits.append('yes')
+            else: submits.append('no')
+        return submits
+
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
     passwd = input("Senha do usuario MySQL\n$ ")
@@ -142,6 +254,7 @@ if __name__ == "__main__":
     for turma in range(3):
         mycursor.execute('insert into classroom (class_) values ("%sF")' %(turma + 1))
         mycursor.execute('create table %sF (studant varchar(80) primary key, N1 int(2), N2 int(2), N3 int(2))' %(turma + 1))
+    mycursor.execute('create table questionnaires (id varchar(50) primary key, name varchar(191), detais varchar(191), visible varchar(3) default "no")')
     mydb.commit()
     functions.register_db(user, passwd)
     print('Tudo em dia!')

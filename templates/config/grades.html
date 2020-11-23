@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="css/grades.css">
+    <link rel="stylesheet" href="/css/chat.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
@@ -17,30 +19,37 @@
     {% else %}
     <h1>Modifique as notas a turma {{class_}}</h1>
     <form method='POST'>
-        <table>
-            <tr style='background-color: rgb(182, 182, 182);'>
-                <th>Nome</th>
-                {% for i in range(3) %}
-                <th>Nota {{i + 1}}</th>
+        <div align='center'>
+            <table>
+                <tr style='background-color: rgb(182, 182, 182);'>
+                    <th>Nome</th>
+                    {% for i in range(3) %}
+                    <th>Nota {{i + 1}}</th>
+                    {% endfor %}
+                </tr>
+                {% for i in grades %}
+                <tr>
+                    <td>{{i[0]}}</td>
+                    {% for l in range(1, 4) %}
+                    <td><input class='grade' name='{{i[0] + "N%s" % l}}' value='{{i[l]}}' type='number' /></td>
+                    {% endfor %}
+                </tr>
                 {% endfor %}
-            </tr>
-            {% for i in grades %}
-            <tr>
-                <td>{{i[0]}}</td>
-                {% for l in range(1, 4) %}
-                <td><input class='grade' name='{{i[0] + "N%s" % l}}' value='{{i[l]}}' type='number' /></td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
+            </table>
+        </div>
         <input value='Salvar' type='submit' />
     </form>
     {% endif %}
     <a href='/panel'><button>Voltar</button></a>
-    <div name='chat'>
-        <h3>Chat</h3>
-        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
-        <input id="text" size="80" placeholder="Digite sua mensagem"><br><br>
+    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
+        <div id="show_chat">
+            <h1>Chat</h1>
+        </div>
+    </a>
+     <div name='chat' id="chat_box">
+        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
+        <textarea id="chat" cols="50" rows="20" readonly></textarea>
+        <input id="text" placeholder="Digite sua mensagem">
     </div>
 </body>
 </html>

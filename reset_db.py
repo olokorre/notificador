@@ -12,6 +12,7 @@ mycursor.execute('create table classroom (class_ varchar(2) primary key)')
 for turma in range(3):
     mycursor.execute('insert into classroom (class_) values ("%sF")' %(turma + 1))
     mycursor.execute('create table %sF (studant varchar(80) primary key, N1 int(2), N2 int(2), N3 int(2))' %(turma + 1))
+mycursor.execute('create table questionnaires (id varchar(50) primary key, name varchar(191), detais varchar(191), visible varchar(3) default "no")')
 mydb.commit()
 
 print('Pronto!')

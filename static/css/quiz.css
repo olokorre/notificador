@@ -1,0 +1,22 @@
+#grid-container{
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+    grid-template-rows: 0.2fr 1fr 1fr;
+}
+#box{
+    border-radius: 10px;
+    background-color:#242424;
+    grid-column-start:2;
+    grid-column-end: 3;
+    grid-row-start:2;
+    grid-row-end:4;
+}
+[type='text']{
+    background-color: #131313;
+}
+#box h1{
+    margin-top: 10%;
+}
+#grid-container *{
+    margin-bottom: 2%;
+}

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="/css/adm_panel.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
@@ -8,19 +10,28 @@
     <script src='/js/chat.js'></script>
     <title>Painel do Administrador - Notificador</title>
 </head>
-<body>  
-    <h1>Bem vindo {{name}}!</h1>
-    <a href='/'><button>Voltar</button></a>
-    <a href='/configure-class'><button>Configurar turmas</button></a>
-    <a href='/add-studants-to-class'><button>Alunos Sem turmas</button></a>
-    <p>Qual turma deseja vizualizar?</p>
-    {% for i in class_ %}
-    <a href='view/{{i}}'><button>{{i}}</button></a>
-    {% endfor %}
-    <div name='chat'>
-        <h3>Chat</h3>
-        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
-        <input id="text" size="80" placeholder="Digite sua mensagem"><br><br>
+<body>
+    <div id ="grid-container">
+        <div id="panel">
+            <h1>Bem vindo {{name}}!</h1>
+            <a href='/'><button>Voltar</button></a>
+            <a href='/configure-class'><button>Configurar turmas</button></a>
+            <a href='/add-studants-to-class'><button>Alunos Sem turmas</button></a>
+            <p>Qual turma deseja vizualizar?</p>
+            {% for i in class_ %}
+            <a href='view/{{i}}'><button>{{i}}</button></a>
+            {% endfor %}
+        </div>  
+    </div>
+    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
+        <div id="show_chat">
+            <h1>Chat</h1>
+        </div>
+    </a>
+     <div name='chat' id="chat_box">
+        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
+        <textarea id="chat" cols="50" rows="20" readonly></textarea>
+        <input id="text" placeholder="Digite sua mensagem">
     </div>
 </body>
 </html>

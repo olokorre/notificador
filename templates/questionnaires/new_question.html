@@ -2,35 +2,24 @@
 <html lang="pt-br">
 <head>
     <link rel="stylesheet" href="/css/chat.css">
-    <link rel="stylesheet" href="/css/view_class.css">
+    <link rel="stylesheet" href="/css/new_question.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar questão de resposta simples - Notificador</title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
     <script src='/js/chat.js'></script>
-    <title>Painel do Administrador - Notificador</title>
 </head>
-<body>  
-    <h1>Bem vindo {{name}}!</h1>
-    <p>Aqui estão os alunos da turma {{class_}}:</p>
-    {% if studants == [] %}
-    <p>Nenhum estudante está cadastrado nessa turma</p>
-    {% else %}
-    <div align='center'>
-        <table>
-            <tr style='background-color: rgb(182, 182, 182);'>
-                <th>Nome</th>
-            </tr>
-            {% for i in studants %}
-            <tr>
-                <td>{{i}}</td>
-            </tr>
-            {% endfor %}
-        </table>
+<body>
+    <div id="grid_container">
+        <div id="box">
+            <h1>Questão de resposta simples:</h1>
+            <form method='POST'>
+                <p>Enunciado: <input name='question' type="text"/></p>
+                <input value='Adicionar' type='submit' />
+            </form>
+        </div>
     </div>
-    {% endif %}
-    <a href='/configure/{{class_}}'><button>Configurar a turma</button></a>
-    <a href='/panel'><button>Voltar</button></a>
     <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
         <div id="show_chat">
             <h1>Chat</h1>
