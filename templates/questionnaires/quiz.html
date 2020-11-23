@@ -9,6 +9,7 @@
 <body>
     <h1>Editar o questionário {{name}}</h1>
     {% if type_account == "Professor" %}
+    <a href='/questionnaires/view/{{id_}}'><button>Ver Respostas</button></a>
     {% if visible == "no" %}
     <a href='/questionnaires/edit/{{id_}}/yes'><button>Tornar visível</button></a>
     {% else %}
@@ -38,6 +39,8 @@
     {% endif %}
     {% endif %}
     {% endfor %}
+    <br />
+    {% if type_account == "Aluno" %}<form method='POST'><input type='submit' value='Enviar respotas'/></form>{% endif %}
     <a href='/panel'><button>Voltar</button></a>
 </body>
 </html>

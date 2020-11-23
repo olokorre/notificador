@@ -34,7 +34,7 @@
     <p>Não existem questionário registrados no sistema</p>
     {% else %}
     {% for i in questionnaires %}
-    {% if i[3] == 'yes' %}
+    {% if i[3] == 'yes' and submit[i[4]] == 'no' %}
     <p><a style='color: black' href='questionnaires/{{i[0]}}'><h3>{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
     {% endif %}
     {% endfor %}

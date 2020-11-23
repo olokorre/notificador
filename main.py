@@ -42,7 +42,8 @@ def painel():
                     'panel/student_panel.html',
                     questionnaires = data_base.list_questionnaires(),
                     name = name,
-                    grades = data_base.return_grades_to_studant(name)
+                    grades = data_base.return_grades_to_studant(name),
+                    submit = data_base.is_submit(data_base.get_name(user))
                 )
             )
         elif type_account == 'Administrador':
@@ -147,7 +148,7 @@ def questionnaires(path):
     user = session.get('user')
     type_account = data_base.get_type_account(user)
     if not data_base.is_questionnaires(path): resp = make_response(redirect('/'))
-    else:
+    elif request.method == 'GET':
         data = data_base.get_data_by_quiz(path)
         name = data[0][0]
         detais = data[0][1]
@@ -166,6 +167,9 @@ def questionnaires(path):
                 type_ = list((i[2] for i in data))
             )
         )
+    else:
+        data_base.submit_quiz(path, data_base.get_name(user))
+        resp = make_response(redirect('/panel'))
     return resp
 
 @app.route('/questionnaires/edit/<path:path>/<path:local>', methods = ('GET','POST'))
@@ -221,6 +225,20 @@ def edit_questions(path, position):
     else:
         data_base.save_resp(path, resposta, position, data_base.get_name(user))
         resp = make_response(redirect('/questionnaires/%s' %(path)))
+    return resp
+
+@app.route('/questionnaires/view/<path:path>')
+def view_resp(path):
+    user = session.get('user')
+    if not data_base.get_type_account(user) == 'Professor': resp = make_response(redirect('/'))
+    else:
+        studants = data_base.return_resp_submit(path)
+        resp = make_response(render_template('/questionnaires/select_studant.html', id_ = path, studants = studants))
+    return resp
+
+@app.route('/questionnaires/view/<path:path>/<path:studant>')
+def view_resp_studant(path, studant):
+    resp = studant
     return resp
 
 @app.route('/questionnaires/delete/<path:path>', methods = ('GET','POST'))

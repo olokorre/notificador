@@ -132,13 +132,17 @@ class Data_Base(object):
     def create_quiz(self, name, id_):
         self.mycursor.execute('insert into questionnaires (id, name, detais) values ("%s", "%s", "Novo questionário")' %(id_, name))
         self.mycursor.execute('create table detais_%s (position int(2) primary key, question varchar(191), type varchar(50), options varchar(191))' %(id_))
-        self.mycursor.execute('create table resp_%s (id int(5) primary key auto_increment, studant varchar(191), position int(2), resp varchar(191), submit varchar(3) default "no")' %(id_))
+        self.mycursor.execute('create table resp_%s (id int(5) primary key auto_increment, studant varchar(191), position int(2), resp varchar(191))' %(id_))
+        self.mycursor.execute('create table submit_%s (studant varchar(191) primary key)' %(id_))
         self.mydb.commit()
 
     def list_questionnaires(self):
         questionnaires = []
         self.mycursor.execute('select * from questionnaires')
-        for i in self.mycursor: questionnaires.append([i[0], i[1], i[2], i[3]])
+        cont = 0
+        for i in self.mycursor:
+            questionnaires.append([i[0], i[1], i[2], i[3], cont])
+            cont += 1
         return questionnaires
 
     def is_questionnaires(self, id_):
@@ -152,6 +156,7 @@ class Data_Base(object):
         self.mycursor.execute('delete from questionnaires where id = "%s"' %(quiz))
         self.mycursor.execute('drop table detais_%s' %(quiz))
         self.mycursor.execute('drop table resp_%s' %(quiz))
+        self.mycursor.execute('drop table submit_%s' %(quiz))
         self.mydb.commit()
 
     def get_data_by_quiz(self, quiz):
@@ -195,6 +200,32 @@ class Data_Base(object):
         for i in self.mycursor:
             if position == str(i[1]): resp = i[0]
         return resp
+
+    def return_resp_submit(self, quiz):
+        studants = []
+        self.mycursor.execute('select studant from submit_%s' %(quiz))
+        for i in self.mycursor: studants.append(i[0])
+        return studants
+
+    def submit_quiz(self, quiz, studant):
+        self.mycursor.execute('insert into submit_%s (studant) values ("%s")' %(quiz, studant))
+        self.mydb.commit()
+
+    def is_submit(self, studant):
+        print(studant)
+        submits = []
+        list_questionnaires = []
+        self.mycursor.execute('select id from questionnaires')
+        for i in self.mycursor: list_questionnaires.append(i[0])
+        for i in list_questionnaires:
+            print(i)
+            self.mycursor.execute('select studant from submit_%s' %(i))
+            for l in self.mycursor:
+                print(studant, l[0])
+                if studant == l[0]: submits.append('yes')
+                else: submits.append('no')
+        if submits == []: submits = ['no']
+        return submits
 
 if __name__ == "__main__":
     user = input("Usuario MySQL\n$ ")
