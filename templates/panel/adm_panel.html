@@ -10,15 +10,19 @@
     <script src='/js/chat.js'></script>
     <title>Painel do Administrador - Notificador</title>
 </head>
-<body>  
-    <h1>Bem vindo {{name}}!</h1>
-    <a href='/'><button>Voltar</button></a>
-    <a href='/configure-class'><button>Configurar turmas</button></a>
-    <a href='/add-studants-to-class'><button>Alunos Sem turmas</button></a>
-    <p>Qual turma deseja vizualizar?</p>
-    {% for i in class_ %}
-    <a href='view/{{i}}'><button>{{i}}</button></a>
-    {% endfor %}
+<body>
+    <div id ="grid-container">
+        <div id="panel">
+            <h1>Bem vindo {{name}}!</h1>
+            <a href='/'><button>Voltar</button></a>
+            <a href='/configure-class'><button>Configurar turmas</button></a>
+            <a href='/add-studants-to-class'><button>Alunos Sem turmas</button></a>
+            <p>Qual turma deseja vizualizar?</p>
+            {% for i in class_ %}
+            <a href='view/{{i}}'><button>{{i}}</button></a>
+            {% endfor %}
+        </div>  
+    </div>
     <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
         <div id="show_chat">
             <h1>Chat</h1>
