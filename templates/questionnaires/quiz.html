@@ -14,50 +14,42 @@
     <!-- <script src='/js/questionnaries.js'></script> -->
 </head>
 <body>
-    <div id="grid-container">
-        <div id="box">
-
-       
-            <h1>Editar o questionário {{name}}</h1>
-            {% if type_account == "Professor" %}
-            {% if visible == "no" %}
-            <a href='/questionnaires/edit/{{id_}}/yes'><button>Tornar visível</button></a>
-            {% else %}
-            <a href='/questionnaires/edit/{{id_}}/no'><button>Tornar invisível</button></a>
-            {% endif %}
-            {% endif %}
-            <h2>
-                {{detais}} 
-                {% if type_account == "Professor" %}
-                <a href='/questionnaires/edit/{{id_}}/meta'><button>Editar</button></a>
-                {% endif %}
-            </h2>
-            <h2>Perguntas</h2>
-            {% if type_account == "Professor" %}
-            <a href='/questionnaires/edit/{{id_}}/simple'><button>Adicionar perginta de resposta simples</button></a>
-            {% endif %}
-            {% for i in position %}
-            {% if type_[i - 1] == 'simple' %}
-            <h4>
-                {{i}} - {{questions[i - 1]}}
-                {% if type_account == 'Professor' %}
-                <button>Editar</button>
-                {% endif %}
-            </h4>
-            {% if type_account == "Aluno" %}
-            <a href='/questionnaires/question/{{id_}}/{{i}}'><button>Responder</button></a>
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-            <a href='/panel'><button>Voltar</button></a>
-        </div>
-    </div>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-     <div name='chat' id="chat_box">
+    <h1>Editar o questionário {{name}}</h1>
+    {% if type_account == "Professor" %}
+    <a href='/questionnaires/view/{{id_}}'><button>Ver Respostas</button></a>
+    {% if visible == "no" %}
+    <a href='/questionnaires/edit/{{id_}}/yes'><button>Tornar visível</button></a>
+    {% else %}
+    <a href='/questionnaires/edit/{{id_}}/no'><button>Tornar invisível</button></a>
+    {% endif %}
+    {% endif %}
+    <h2>
+        {{detais}} 
+        {% if type_account == "Professor" %}
+        <a href='/questionnaires/edit/{{id_}}/meta'><button>Editar</button></a>
+        {% endif %}
+    </h2>
+    <h2>Perguntas</h2>
+    {% if type_account == "Professor" %}
+    <a href='/questionnaires/edit/{{id_}}/simple'><button>Adicionar perginta de resposta simples</button></a>
+    {% endif %}
+    {% for i in position %}
+    {% if type_[i - 1] == 'simple' %}
+    <h4>
+        {{i}} - {{questions[i - 1]}}
+        {% if type_account == 'Professor' %}
+        <button>Editar</button>
+        {% endif %}
+    </h4>
+    {% if type_account == "Aluno" %}
+    <a href='/questionnaires/question/{{id_}}/{{i}}'><button>Responder</button></a>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    <br />
+    {% if type_account == "Aluno" %}<form method='POST'><input type='submit' value='Enviar respotas'/></form>{% endif %}
+    <a href='/panel'><button>Voltar</button></a>
+    <div name='chat' id="chat_box">
         <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
         <textarea id="chat" cols="50" rows="20" readonly></textarea>
         <input id="text" placeholder="Digite sua mensagem">

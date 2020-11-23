@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respostas - Notificador</title>
+</head>
+<body>
+    {% if studants == [] %}
+    <h1>Nenhum estudante enviou as suas respostas</h1>
+    {% else %}
+    {% for i in studants %}
+    <a href='/questionnaires/view/{{id_}}/{{i}}'><button>{{i}}</button></a>
+    {% endfor %}
+    {%endif%}
+</body>
+</html>

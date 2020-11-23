@@ -10,48 +10,39 @@
     <script src='/js/chat.js'></script>
     <title>Painel do Aluno - Notificador</title>
 </head>
-<body>
-    <div id="grid-container">
-        <div id="panel">  
-            <h1>Bem vindo {{name}}!</h1>
-            {% if grades == [] %}
-            <p>Você não está cadastrado em uma turma, contate um adiministrador do sistema.</p>
-            {% else %}
-            <h2>Notas:</h2>
-            <table>
-                <tr style='background-color: rgb(182, 182, 182);'>
-                    <th>Nome</th>
-                    <th>Nota 1</th>
-                    <th>Nota 2</th>
-                    <th>Nota 3</th>
-                </tr>
-                <tr>
-                    <td>{{grades[0]}}</td>
-                    <td>{{grades[1]}}</td>
-                    <td>{{grades[2]}}</td>
-                    <td>{{grades[3]}}</td>
-                </tr>
-                {% endif %}
-            </table>
-            <h2>Questionários:</h2>
-            {% if questionnaires == [] %}
-            <p>Não existem questionário registrados no sistema</p>
-            {% else %}
-            {% for i in questionnaires %}
-            {% if i[3] == 'yes' %}
-            <p><a style='color: black' href='questionnaires/{{i[0]}}'><h3>{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
-            {% endif %}
-            {% endfor %}
-            {% endif %}
-            <a href='/'><button>Voltar</button></a>
-        </div>
-    </div>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-     <div name='chat' id="chat_box">
+<body>  
+    <h1>Bem vindo {{name}}!</h1>
+    {% if grades == [] %}
+    <p>Você não está cadastrado em uma turma, contate um adiministrador do sistema.</p>
+    {% else %}
+    <h2>Notas:</h2>
+    <table>
+        <tr style='background-color: rgb(182, 182, 182);'>
+            <th>Nome</th>
+            <th>Nota 1</th>
+            <th>Nota 2</th>
+            <th>Nota 3</th>
+        </tr>
+        <tr>
+            <td>{{grades[0]}}</td>
+            <td>{{grades[1]}}</td>
+            <td>{{grades[2]}}</td>
+            <td>{{grades[3]}}</td>
+        </tr>
+        {% endif %}
+    </table>
+    <h2>Questionários:</h2>
+    {% if questionnaires == [] %}
+    <p>Não existem questionário registrados no sistema</p>
+    {% else %}
+    {% for i in questionnaires %}
+    {% if i[3] == 'yes' and submit[i[4]] == 'no' %}
+    <p><a style='color: black' href='questionnaires/{{i[0]}}'><h3>{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <a href='/'><button>Voltar</button></a>
+    <div name='chat' id="chat_box">
         <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
         <textarea id="chat" cols="50" rows="20" readonly></textarea>
         <input id="text" placeholder="Digite sua mensagem">
