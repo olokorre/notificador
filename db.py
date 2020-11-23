@@ -206,25 +206,28 @@ class Data_Base(object):
         self.mycursor.execute('select studant from submit_%s' %(quiz))
         for i in self.mycursor: studants.append(i[0])
         return studants
+    
+    def return_resp_by_studant(self, studant, quiz):
+        resps = []
+        self.mycursor.execute('select resp from resp_%s where studant = "%s"' %(quiz, studant))
+        for i in self.mycursor: resps.append(i[0])
+        return resps
 
     def submit_quiz(self, quiz, studant):
         self.mycursor.execute('insert into submit_%s (studant) values ("%s")' %(quiz, studant))
         self.mydb.commit()
 
     def is_submit(self, studant):
-        print(studant)
         submits = []
-        list_questionnaires = []
+        questionnaires = []
+        studants_submit = []
         self.mycursor.execute('select id from questionnaires')
-        for i in self.mycursor: list_questionnaires.append(i[0])
-        for i in list_questionnaires:
-            print(i)
+        for i in self.mycursor: questionnaires.append(i[0])
+        for i in questionnaires:
             self.mycursor.execute('select studant from submit_%s' %(i))
-            for l in self.mycursor:
-                print(studant, l[0])
-                if studant == l[0]: submits.append('yes')
-                else: submits.append('no')
-        if submits == []: submits = ['no']
+            for l in self.mycursor: studants_submit.append(l[0])
+            if studant in studants_submit: submits.append('yes')
+            else: submits.append('no')
         return submits
 
 if __name__ == "__main__":

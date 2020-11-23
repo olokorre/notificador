@@ -238,8 +238,8 @@ def view_resp(path):
 
 @app.route('/questionnaires/view/<path:path>/<path:studant>')
 def view_resp_studant(path, studant):
-    resp = studant
-    return resp
+    resp = data_base.return_resp_by_studant(studant, path)
+    return render_template('/questionnaires/view_resp.html', studant = studant, tam = len(resp), resp = resp)
 
 @app.route('/questionnaires/delete/<path:path>', methods = ('GET','POST'))
 def delete_questionnaires(path):

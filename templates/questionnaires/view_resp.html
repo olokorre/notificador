@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respostas - Notificador</title>
+</head>
+<body>
+    <h1>Respostas do aluno {{studant}}</h1>
+    {% for i in range(tam) %}
+    <p><h4>{{i + 1}}</h4>{{resp[i]}}</p>
+    <br />
+    {% endfor %}
+    <a href='/panel'><button>Voltar</button></a>
+</body>
+</html>
