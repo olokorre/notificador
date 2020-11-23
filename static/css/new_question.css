@@ -1,26 +1,7 @@
 body{
-    background-color:#131313;
-    text-align: center;
-    color:white;
-}
-#grid-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: repeat(3,1fr);
-    height: 100vh;
-  
-}
-#home-page h1{
-    margin-top: 20%;
-}
-#home-page{
-    border-radius: 10px;
-    background-color:#242424;
-    grid-column-start:2;
-    grid-column-end: 3;
-    grid-row-start:2;
-    grid-row-end:3;
-
+    text-align:center;
+    background-color: #131313;
+    color: white;
 }
 #show_chat{
     border-radius: 5px 5px 0 0;
@@ -33,6 +14,7 @@ body{
     width: 20%;
   }
 h1{
+    margin-top: 2%;
     font-size: clamp(20px,2vw,30px);
 }
 div a{
@@ -41,7 +23,7 @@ div a{
     color: white;
     text-decoration: none;
 }
-h3{
+a h3{
     font-size: clamp(20px,2vw,30px);
     margin-top: 0;
     width: 100%;

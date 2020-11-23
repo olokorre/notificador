@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="/css/chat.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar questão de resposta simples - Notificador</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src='/js/chat.js'></script>
 </head>
 <body>
     <h1>Questão de resposta simples:</h1>
@@ -11,5 +15,15 @@
         <p>Enunciado: <input name='question' /></p>
         <input value='Adicionar' type='submit' />
     </form>
+    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
+        <div id="show_chat">
+            <h1>Chat</h1>
+        </div>
+    </a>
+     <div name='chat' id="chat_box">
+        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
+        <textarea id="chat" cols="50" rows="20" readonly></textarea>
+        <input id="text" placeholder="Digite sua mensagem">
+    </div>
 </body>
 </html>
