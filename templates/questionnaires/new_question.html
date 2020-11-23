@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="/css/new_question.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar questão de resposta simples - Notificador</title>
@@ -10,11 +11,15 @@
     <script src='/js/chat.js'></script>
 </head>
 <body>
-    <h1>Questão de resposta simples:</h1>
-    <form method='POST'>
-        <p>Enunciado: <input name='question' /></p>
-        <input value='Adicionar' type='submit' />
-    </form>
+    <div id="grid_container">
+        <div id="box">
+            <h1>Questão de resposta simples:</h1>
+            <form method='POST'>
+                <p>Enunciado: <input name='question' type="text"/></p>
+                <input value='Adicionar' type='submit' />
+            </form>
+        </div>
+    </div>
     <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
         <div id="show_chat">
             <h1>Chat</h1>

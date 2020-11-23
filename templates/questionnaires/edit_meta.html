@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 
-    <link rel="stylesheet" href="edit_meta.css">
+    <link rel="stylesheet" href="/css/edit_meta.css">
     <link rel="stylesheet" href="/css/chat.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,12 +12,16 @@
     <script src='/js/chat.js'></script>
 </head>
 <body>
-    <h1>Editar o questionario {{name}}</h1>
-    <form method='POST'>
-        <h2>Descrição: <input name='detais' type='text' value='{{detais}}' /></h2>
-        <input type='submit' value='Salvar' />
-    </form>
-    <a href='/questionnaires/{{id_}}'><button>Voltar</button></a>
+    <div id ="grid-container">
+        <div id ="box">
+            <h1>Editar o questionario {{name}}</h1>
+            <form method='POST'>
+                <h2>Descrição: <input name='detais' type='text' value='{{detais}}' /></h2>
+                <input type='submit' value='Salvar' />
+            </form>
+            <a href='/questionnaires/{{id_}}'><button>Voltar</button></a>
+        </div>
+    </div>
     <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
         <div id="show_chat">
             <h1>Chat</h1>
