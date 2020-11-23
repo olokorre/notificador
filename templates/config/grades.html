@@ -19,22 +19,24 @@
     {% else %}
     <h1>Modifique as notas a turma {{class_}}</h1>
     <form method='POST'>
-        <table>
-            <tr style='background-color: rgb(182, 182, 182);'>
-                <th>Nome</th>
-                {% for i in range(3) %}
-                <th>Nota {{i + 1}}</th>
+        <div align='center'>
+            <table>
+                <tr style='background-color: rgb(182, 182, 182);'>
+                    <th>Nome</th>
+                    {% for i in range(3) %}
+                    <th>Nota {{i + 1}}</th>
+                    {% endfor %}
+                </tr>
+                {% for i in grades %}
+                <tr>
+                    <td>{{i[0]}}</td>
+                    {% for l in range(1, 4) %}
+                    <td><input class='grade' name='{{i[0] + "N%s" % l}}' value='{{i[l]}}' type='number' /></td>
+                    {% endfor %}
+                </tr>
                 {% endfor %}
-            </tr>
-            {% for i in grades %}
-            <tr>
-                <td>{{i[0]}}</td>
-                {% for l in range(1, 4) %}
-                <td><input class='grade' name='{{i[0] + "N%s" % l}}' value='{{i[l]}}' type='number' /></td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
+            </table>
+        </div>
         <input value='Salvar' type='submit' />
     </form>
     {% endif %}

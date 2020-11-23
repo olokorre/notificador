@@ -15,7 +15,8 @@
     {% if grades == [] %}
     <p>Você não está cadastrado em uma turma, contate um adiministrador do sistema.</p>
     {% else %}
-    <h2>Notas:</h2>
+    <div align='center'>
+        <h2>Notas:</h2>
     <table>
         <tr style='background-color: rgb(182, 182, 182);'>
             <th>Nome</th>
@@ -31,18 +32,24 @@
         </tr>
         {% endif %}
     </table>
+    </div>
     <h2>Questionários:</h2>
     {% if questionnaires == [] %}
     <p>Não existem questionário registrados no sistema</p>
     {% else %}
     {% for i in questionnaires %}
     {% if i[3] == 'yes' and submit[i[4]] == 'no' %}
-    <p><a style='color: black' href='questionnaires/{{i[0]}}'><h3>{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
+    <p><a style='color: white' href='questionnaires/{{i[0]}}'><h3>{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
     {% endif %}
     {% endfor %}
     {% endif %}
     <a href='/'><button>Voltar</button></a>
-    <div name='chat' id="chat_box">
+    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
+        <div id="show_chat">
+            <h1>Chat</h1>
+        </div>
+    </a>
+     <div name='chat' id="chat_box">
         <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
         <textarea id="chat" cols="50" rows="20" readonly></textarea>
         <input id="text" placeholder="Digite sua mensagem">

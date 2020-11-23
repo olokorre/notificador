@@ -16,16 +16,18 @@
     {% if studants == [] %}
     <p>Nenhum estudante está cadastrado nessa turma</p>
     {% else %}
-    <table>
-        <tr style='background-color: rgb(182, 182, 182);'>
-            <th>Nome</th>
-        </tr>
-        {% for i in studants %}
-        <tr>
-            <td>{{i}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div align='center'>
+        <table>
+            <tr style='background-color: rgb(182, 182, 182);'>
+                <th>Nome</th>
+            </tr>
+            {% for i in studants %}
+            <tr>
+                <td>{{i}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
     {% endif %}
     <a href='/configure/{{class_}}'><button>Configurar a turma</button></a>
     <a href='/panel'><button>Voltar</button></a>

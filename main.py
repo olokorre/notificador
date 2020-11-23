@@ -196,6 +196,13 @@ def edit_questionnaires(path, local):
         else:
             data = request.form['question']
             resp = make_response(redirect('/questionnaires/%s' %(path)))
+    elif local == 'objetiva':
+        if request.method == 'GET': resp = make_response(render_template('/questionnaires/new_objetiva.html'))
+        else:
+            question = request.form['question']
+            option = request.form['options']
+            data = [question, option]
+            resp = make_response(redirect('/questionnaires/%s' %(path)))
     elif local == 'yes' or local == 'no':
         data = local
         resp = resp = make_response(redirect('/questionnaires/%s' %(path)))
@@ -220,6 +227,27 @@ def edit_questions(path, position):
                 name = name,
                 question = question,
                 resp_ = resp_
+            )
+        )
+    else:
+        data_base.save_resp(path, resposta, position, data_base.get_name(user))
+        resp = make_response(redirect('/questionnaires/%s' %(path)))
+    return resp
+
+@app.route('/questionnaires/objetiva/<path:path>/<path:position>', methods = ('GET','POST'))
+def edit_objetivas(path, position):
+    user = session.get('user')
+    resposta = request.args.get('resp')
+    if resposta == None:
+        data = data_base.get_info_objetiva(position, path)
+        alfabeto = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        resp = make_response(
+            render_template(
+                '/questionnaires/objetiva.html',
+                question = data[0],
+                options = data[1],
+                alfabeto = alfabeto,
+                tam = len(data[1])
             )
         )
     else:

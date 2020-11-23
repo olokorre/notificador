@@ -166,19 +166,30 @@ class Data_Base(object):
         self.mycursor.execute('select * from detais_%s' %(quiz))
         for i in self.mycursor: data.append([i[0], i[1], i[2], i[3]])
         return data
+    
+    def get_info_objetiva(self, position, quiz):
+        options = []
+        question = ''
+        self.mycursor.execute('select question from detais_%s where position = %s' %(quiz, position))
+        for i in self.mycursor: question = i[0]
+        self.mycursor.execute('select options from detais_%s where position = %s' %(quiz, position))
+        for i in self.mycursor: options = i[0]
+        x = options.split('; ')
+        return [question, x]
 
     def save_data_by_quiz(self, quiz, local, data):
         if local == 'meta':
             self.mycursor.execute('update questionnaires set detais = "%s" where id = "%s"' %(data, quiz))
         elif local == 'yes' or local == 'no':
             self.mycursor.execute('update questionnaires set visible = "%s" where id = "%s"' %(data, quiz))
-        elif local == 'simple':
+        elif local == 'simple' or local == 'objetiva':
             position = []
             self.mycursor.execute('select position from detais_%s' %(quiz))
             for i in self.mycursor: position.append(i[0])
             if position == []: n = 1
             else: n = int(position[-1]) + 1
-            self.mycursor.execute('insert into detais_%s (position, question, type) values (%s, "%s", "simple")' %(quiz, n, data))
+            if local == 'simple': self.mycursor.execute('insert into detais_%s (position, question, type) values (%s, "%s", "simple")' %(quiz, n, data))
+            else: self.mycursor.execute('insert into detais_%s (position, question, type, options) values ("%s", "%s", "objetiva", "%s")' %(quiz, n, data[0], data[1]))
         self.mydb.commit()
 
     def save_resp(self, quiz, resp, position, studant):

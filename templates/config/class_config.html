@@ -18,25 +18,27 @@
             {% else %}
             <h1>Insira as turmas para cada aluno registrado na plataforma:</h1>
             <form method='POST'>
-                <table>
-                    <tr style='background-color: rgb(182, 182, 182);'>
-                        <th>Nome</th>
-                        <th>Turma</th>
-                    </tr>
-                    {% for i in studants %}
-                    <tr>
-                        <td>{{i}}</td>
-                        <td>
-                            <input value='{{class_}}' name='{{i}}' list='{{i}}'>
-                            <datalist id='{{i}}'>
-                                {% for l in classroom %}
-                                <option value='{{l}}'>
-                                {% endfor %}
-                            </datalist>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                <div align='center'>
+                    <table>
+                        <tr style='background-color: rgb(182, 182, 182);'>
+                            <th>Nome</th>
+                            <th>Turma</th>
+                        </tr>
+                        {% for i in studants %}
+                        <tr>
+                            <td>{{i}}</td>
+                            <td>
+                                <input value='{{class_}}' name='{{i}}' list='{{i}}'>
+                                <datalist id='{{i}}'>
+                                    {% for l in classroom %}
+                                    <option value='{{l}}'>
+                                    {% endfor %}
+                                </datalist>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
                 <input type='submit' value='Salvar' />
             </form>
             {% endif %}
