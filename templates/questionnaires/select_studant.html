@@ -1,33 +1,14 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <link rel="stylesheet" href="/css/chat.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script src='/js/chat.js'></script>
-    <title>Respostas - Notificador</title>
-</head>
-<body>
-    {% if studants == [] %}
-    <h1>Nenhum estudante enviou as suas respostas</h1>
-    {% else %}
-    <h1>Os alunos abaixo entregaram respostas desse questionário:</h1>
-    <p>Escolha o aluno cujo respostas deseja ver:</p>
-    {% for i in studants %}
-    <a href='/questionnaires/view/{{id_}}/{{i}}'><button>{{i}}</button></a>
-    {% endfor %}
-    {%endif%}
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-     <div name='chat' id="chat_box">
-        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
-        <textarea id="chat" cols="50" rows="20" readonly></textarea>
-        <input id="text" placeholder="Digite sua mensagem">
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block header %}  {% endblock %}
+{% block title %} Respostas {% endblock %}
+{% block content %}
+{% if studants == [] %}
+<h1>Nenhum estudante enviou as suas respostas</h1>
+{% else %}
+<h1>Os alunos abaixo entregaram respostas desse questionário:</h1>
+<p>Escolha o aluno cujo respostas deseja ver:</p>
+{% for i in studants %}
+<a href='/questionnaires/view/{{id_}}/{{i}}'><button>{{i}}</button></a>
+{% endfor %}
+{% endif %}
+{% endblock %}

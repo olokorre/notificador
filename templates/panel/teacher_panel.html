@@ -1,47 +1,26 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <link rel="stylesheet" href="/css/chat.css">
-    <link rel="stylesheet" href="/css/teacher_panel.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script src='/js/chat.js'></script>
-    <script src='/js/questionnaries.js'></script>
-    <title>Painel do Professor - Notificador</title>
-</head>
-<body>
-    <div id ="grid-container">
-        <div id ="panel">
-            <h1>Bem vindo Professor {{name}}!</h1>
-            <h2>Notas</h2>
-            <p>Visualize ou altere as notas dos alunos:</p>
-            {% for i in classroom %}
-            <a href='/grades/{{i}}'><button>{{i}}</button></a>
-            {% endfor %}
-            <h2>Questionários:</h2>
-            {% if questionnaires == [] %}
-            <p>Não existe questionário registrado no sistema</p>
-            {% else %}
-            {% for i in questionnaires %}
-            <p><a href='questionnaires/{{i[0]}}'><h3 id="sublinhado">{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
-            <a href='/questionnaires/delete/{{i[0]}}'><button>Deletar</button></a><br />
-            {% endfor %}
-            {% endif %}
-            <a href='/questionnaires'><button>Criar questionário</button></a>
-            <a href='/'><button>Voltar</button></a>
-        </div>
+{% extends 'base.html' %}
+{% block header %} <link rel="stylesheet" href="/css/teacher_panel.css"> {% endblock %}
+{% block title %} Painel do professor {% endblock %}
+{% block content %}
+<div id ="grid-container">
+    <div id ="panel">
+        <h1>Bem vindo Professor {{name}}!</h1>
+        <h2>Notas</h2>
+        <p>Visualize ou altere as notas dos alunos:</p>
+        {% for i in classroom %}
+        <a href='/grades/{{i}}'><button>{{i}}</button></a>
+        {% endfor %}
+        <h2>Questionários:</h2>
+        {% if questionnaires == [] %}
+        <p>Não existe questionário registrado no sistema</p>
+        {% else %}
+        {% for i in questionnaires %}
+        <p><a href='questionnaires/{{i[0]}}'><h3 id="sublinhado">{{i[1]}}</h3></a><p>{{i[2]}}</p></p>
+        <a href='/questionnaires/delete/{{i[0]}}'><button>Deletar</button></a><br />
+        {% endfor %}
+        {% endif %}
+        <a href='/questionnaires'><button>Criar questionário</button></a>
+        <a href='/'><button>Voltar</button></a>
     </div>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-     <div name='chat' id="chat_box">
-        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
-        <textarea id="chat" cols="50" rows="20" readonly></textarea>
-        <input id="text" placeholder="Digite sua mensagem">
-    </div>
-</body>
-</html>
+</div>
+{% endblock %}

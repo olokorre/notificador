@@ -1,36 +1,15 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-
-    <link rel="stylesheet" href="/css/edit_meta.css">
-    <link rel="stylesheet" href="/css/chat.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{name}} - Notificador</title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script src='/js/chat.js'></script>
-</head>
-<body>
-    <div id ="grid-container">
-        <div id ="box">
-            <h1>Editar o questionario {{name}}</h1>
-            <form method='POST'>
-                <h2>Descrição: <input name='detais' type='text' value='{{detais}}' /></h2>
-                <input type='submit' value='Salvar' />
-            </form>
-            <a href='/questionnaires/{{id_}}'><button>Voltar</button></a>
-        </div>
+{% extends 'base.html' %}
+{% block header %} <link rel="stylesheet" href="/css/edit_meta.css"> {% endblock %}
+{% block title %} Editar o questionario {{name}} {% endblock %}
+{% block content %}
+<div id ="grid-container">
+    <div id ="box">
+        <h1>Editar o questionario {{name}}</h1>
+        <form method='POST'>
+            <h2>Descrição: <input name='detais' type='text' value='{{detais}}' /></h2>
+            <input type='submit' value='Salvar' />
+        </form>
+        <a href='/questionnaires/{{id_}}'><button>Voltar</button></a>
     </div>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-     <div name='chat' id="chat_box">
-        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
-        <textarea id="chat" cols="50" rows="20" readonly></textarea>
-        <input id="text" placeholder="Digite sua mensagem">
-    </div>
-</body>
-</html>
+</div>
+{% endblock %}

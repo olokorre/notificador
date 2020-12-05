@@ -1,25 +1,19 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <link rel="stylesheet" href="/css/login.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entre com sua conta! - Notificador</title>
-</head>
-<body>
-    <div id="grid-container">
-        <div id="giga_text">
-            <h1>Logue na Plataforma</h1>
-        </div>
-        <div id="sign_in">
-            <h2>Bem Vindo de Volta,</h2>
-                <form method="POST">
-                    <input required name='user' placeholder="Usuário" class="text_input"/>
-                    <input required name='passwd' type='password' placeholder="Senha" class="text_input"/>
-                    <input type='submit' value='Entrar' class="button"/>
-                </form>
-                <h2>Não tem conta? <a href='/sign-up' >Registre-se</a></h2>
-        </div>
+{% extends '/login/base-login.html' %}
+{% block header %} <link rel="stylesheet" href="/css/login.css"> {% endblock %}
+{% block title %} Entre com sua conta! {% endblock %}
+{% block content %}
+<div id="grid-container">
+    <div id="giga_text">
+        <h1>Logue na Plataforma</h1>
     </div>
-</body>
-</html>
+    <div id="sign_in">
+        <h2>Bem Vindo de Volta,</h2>
+            <form method="POST">
+                <input required name='user' placeholder="Usuário" class="text_input"/>
+                <input required name='passwd' type='password' placeholder="Senha" class="text_input"/>
+                <input type='submit' value='Entrar' class="button"/>
+            </form>
+            <h2>Não tem conta? <a href='/sign-up' >Registre-se</a></h2>
+    </div>
+</div>
+{% endblock %}

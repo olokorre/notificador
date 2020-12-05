@@ -1,60 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <link rel="stylesheet" href="css/fix_studants.css">
-    <link rel="stylesheet" href="/css/chat.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script src='/js/chat.js'></script>
-    <title>Painel do Administrador - Notificador</title>
-</head>
-<body>  
-    {% if studants == [] %}
-    <h1>Todos os alunos estão devidamente cadastrados!</h1>
-    {% else %}
-    <h1>Insira os alunos abaixo nas turmas:</h1>
-    <form method='POST'>
-        <div align='center'>
-            <table>
-                <tr style='background-color: rgb(182, 182, 182);'>
-                    <th>Nome</th>
-                    <th>Turma</th>
-                </tr>
-                {% for i in studants %}
-                <tr>
-                    <td>{{i}}</td>
-                    <td>
-                        <input name='{{i}}' list='{{i}}'>
-                        <datalist id='{{i}}'>
-                            {% for l in class_ %}
-                            <option value='{{l}}'>
-                            {% endfor %}
-                        </datalist>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <input type='submit' value='Salvar' />
-    </form>
-    {% endif %}
-    <a href='/panel'><button>Voltar</button></a>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-     <div name='chat' id="chat_box">
-        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
-        <textarea id="chat" cols="50" rows="20" readonly></textarea>
-        <input id="text" placeholder="Digite sua mensagem">
+{% extends 'base.html' %}
+{% block header %} <link rel="stylesheet" href="css/fix_studants.css"> {% endblock %}
+{% block title %} Painel do Administrador {% endblock %}
+{% block content %}
+{% if studants == [] %}
+<h1>Todos os alunos estão devidamente cadastrados!</h1>
+{% else %}
+<h1>Insira os alunos abaixo nas turmas:</h1>
+<form method='POST'>
+    <div align='center'>
+        <table>
+            <tr style='background-color: rgb(182, 182, 182);'>
+                <th>Nome</th>
+                <th>Turma</th>
+            </tr>
+            {% for i in studants %}
+            <tr>
+                <td>{{i}}</td>
+                <td>
+                    <input name='{{i}}' list='{{i}}'>
+                    <datalist id='{{i}}'>
+                        {% for l in class_ %}
+                        <option value='{{l}}'>
+                        {% endfor %}
+                    </datalist>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-</body>
-</html>
+    <input type='submit' value='Salvar' />
+</form>
+{% endif %}
+{% endblock %}

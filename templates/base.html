@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <link rel="stylesheet" href="css/teacher_config.css">
+    {% block header %}
+    {% endblock %}
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurações - Notificador</title>
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="shortcut icon" href="/images/fire.png">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
     <script src='/js/chat.js'></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Notificador</title>
 </head>
 <body>
-    <h1>Painel de configurações</h1>
-    <a href='/classroom_config'><button>Configurações de turma</button></a>
-    <a href='/'><button>Início</button></a>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
+    <div id='content'>{% block content %}{% endblock %}</div>
+    <a onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
         <div id="show_chat">
             <h1>Chat</h1>
         </div>
     </a>
      <div name='chat' id="chat_box">
-        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
+        <a onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
         <textarea id="chat" cols="50" rows="20" readonly></textarea>
         <input id="text" placeholder="Digite sua mensagem">
     </div>

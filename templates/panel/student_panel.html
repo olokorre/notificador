@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <link rel="stylesheet" href="/css/chat.css">
-    <link rel="stylesheet" href="/css/student_panel.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script src='/js/chat.js'></script>
-    <title>Painel do Aluno - Notificador</title>
-</head>
-<body>  
-    <h1>Bem vindo {{name}}!</h1>
+{% extends 'base.html' %}
+{% block header %} <link rel="stylesheet" href="/css/student_panel.css"> {% endblock %}
+{% block title %} Painel do aluno {% endblock %}
+{% block content %}
+<h1>Bem vindo {{name}}!</h1>
     {% if grades == [] %}
     <p>Você não está cadastrado em uma turma, contate um adiministrador do sistema.</p>
     {% else %}
@@ -20,15 +11,10 @@
     <table>
         <tr style='background-color: rgb(182, 182, 182);'>
             <th>Nome</th>
-            <th>Nota 1</th>
-            <th>Nota 2</th>
-            <th>Nota 3</th>
+            {% for i in range(1, 4) %} <th>Nota {{i}}</th> {% endfor %}
         </tr>
         <tr>
-            <td>{{grades[0]}}</td>
-            <td>{{grades[1]}}</td>
-            <td>{{grades[2]}}</td>
-            <td>{{grades[3]}}</td>
+            {% for i in range(4) %} <td>{{grades[i]}}</td> {% endfor %}
         </tr>
         {% endif %}
     </table>
@@ -44,15 +30,4 @@
     {% endfor %}
     {% endif %}
     <a href='/'><button>Voltar</button></a>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-     <div name='chat' id="chat_box">
-        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
-        <textarea id="chat" cols="50" rows="20" readonly></textarea>
-        <input id="text" placeholder="Digite sua mensagem">
-    </div>
-</body>
-</html>
+{% endblock %}

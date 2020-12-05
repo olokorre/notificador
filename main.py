@@ -346,9 +346,9 @@ def send_js(path):
 def send_css(path):
 	return send_from_directory('static/css', path)
 
-@app.route('/image/<path:path>')
+@app.route('/images/<path:path>')
 def send_image(path):
-	return send_from_directory('static/image', path)
+	return send_from_directory('static/images', path)
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0')
