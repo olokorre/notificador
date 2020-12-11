@@ -11,9 +11,9 @@ h2{
     font-size: clamp(20px,2vw,30px);
 }
 .text_input{
+    color: white;
     border:none;
     font-size: clamp(15px,1.5vw,25px);
-    color: white;
     background-color:#131313;
     width: 80%;
     margin-bottom: 5%;
@@ -26,8 +26,8 @@ a{
 .button{
     font-size: clamp(15px,1.5vw,25px);
     width: 50%;
-    background-color: #963030; 
     color: white;
+    background-color: #963030; 
     border-radius: 5px;
     border:none;  
 }

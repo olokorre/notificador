@@ -1,59 +1,39 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <link rel="stylesheet" href="/css/class_config.css">
-    <link rel="stylesheet" href="/css/chat.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script src='/js/chat.js'></script>
-    <title>Configurações - Notificador</title>
-</head>
-<body>
-    <div id="grid-container">
-        <div id ="box">               
-            {% if studants == [] %}
-            <h1>Não há alunos nesta turma!</h1>
-            {% else %}
-            <h1>Insira as turmas para cada aluno registrado na plataforma:</h1>
-            <form method='POST'>
-                <div align='center'>
-                    <table>
-                        <tr style='background-color: rgb(182, 182, 182);'>
-                            <th>Nome</th>
-                            <th>Turma</th>
-                        </tr>
-                        {% for i in studants %}
-                        <tr>
-                            <td>{{i}}</td>
-                            <td>
-                                <input value='{{class_}}' name='{{i}}' list='{{i}}'>
-                                <datalist id='{{i}}'>
-                                    {% for l in classroom %}
-                                    <option value='{{l}}'>
-                                    {% endfor %}
-                                </datalist>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-                <input type='submit' value='Salvar' />
-            </form>
-            {% endif %}
-            <a href='/configure-class'><button>Voltar</button></a>
-        </div>
+{% extends 'base.html' %}
+{% block header %} <link rel="stylesheet" href="/css/class_config.css"> {% endblock %}
+{% block title %} Configurações {% endblock %}
+{% block content %}
+<div id="grid-container">
+    <div id ="box">               
+        {% if studants == [] %}
+        <h1>Não há alunos nesta turma!</h1>
+        {% else %}
+        <h1>Insira as turmas para cada aluno registrado na plataforma:</h1>
+        <form method='POST'>
+            <div align='center'>
+                <table>
+                    <tr style='background-color: rgb(182, 182, 182);'>
+                        <th>Nome</th>
+                        <th>Turma</th>
+                    </tr>
+                    {% for i in studants %}
+                    <tr>
+                        <td>{{i}}</td>
+                        <td>
+                            <input value='{{class_}}' name='{{i}}' list='{{i}}'>
+                            <datalist id='{{i}}'>
+                                {% for l in classroom %}
+                                <option value='{{l}}'>
+                                {% endfor %}
+                            </datalist>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <input type='submit' value='Salvar' />
+        </form>
+        {% endif %}
+        <a href='/configure-class'><button>Voltar</button></a>
     </div>
-    <a href="#" onclick="document.getElementById('chat_box').style.display='block';document.getElementById('Flutuante').style.display='none'">
-        <div id="show_chat">
-            <h1>Chat</h1>
-        </div>
-    </a>
-     <div name='chat' id="chat_box">
-        <a href="#" onclick="document.getElementById('chat_box').style.display='none';document.getElementById('Flutuante').style.display='block'"><h3>Chat</h3></a>
-        <textarea id="chat" cols="50" rows="20" readonly></textarea>
-        <input id="text" placeholder="Digite sua mensagem">
-    </div>
-</body>
-</html>
+</div>
+{% endblock %}

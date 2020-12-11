@@ -1,0 +1,27 @@
+body{
+    text-align:center;
+    color: white;
+    background-color: #131313;
+}
+a{
+    color: white;
+    text-decoration: dashed;
+}
+input{
+    border:none;
+    font-size: clamp(15px,1.5vw,25px);
+    color: white;
+    background-color:#242424;
+    height: 20%;
+    border-radius: 5px;
+}
+
+button, [type='submit']{
+    font-size: clamp(15px,1.5vw,25px);
+    background-color: #963030; 
+    color: white;
+    border-radius: 5px;
+    border:none;
+    margin: 0.5%;
+    margin-bottom: 5%;
+}
