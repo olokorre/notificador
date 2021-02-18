@@ -1,0 +1,38 @@
+body {
+    color: white;
+    background-color: #131313;
+}
+
+th {
+    background-color:#222222;
+}
+
+#box {
+    width: 70em;
+}
+
+#a {
+    width: 20em;
+}
+
+#chat {
+    margin-top: 2%;
+    font-size: clamp(10px,1vw,20px);
+    color: white;
+    background-color: #131313;
+    width: 65em;
+    height: 37em;
+    border:none;
+    border-radius: 5px;
+    margin-bottom: 2%;
+}
+
+#text {
+    font-size: clamp(10px,1vw,20px);
+    color: white;
+    width: 65em;
+    background-color: #131313;
+    border:none;
+    border-radius: 5px;
+    height: 7%;
+}

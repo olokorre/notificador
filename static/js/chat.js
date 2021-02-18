@@ -3,7 +3,7 @@ var socket;
 $(document).ready(function(){
     socket = io();
     socket.on('connect', function() {
-        socket.emit('joined', {});
+        socket.emit('joined', { room: 'main_room' });
     });
     socket.on('status', function(data) {
         $('#chat').val('');

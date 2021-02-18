@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/page_chat.css">
+    <link rel="shortcut icon" href="/images/fire.png">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src='/js/chat.js'></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Notificador</title>
+</head>
+<body>
+    <div id='content'>
+        <table>
+            <th id='a'>
+                <div id='chats'>
+                    <h2>Chat</h2>
+                </div>
+            </th>
+            <th id='box'>
+                <div id='chat_box'>
+                    <h3>Nome pessoa</h3>
+                    <textarea id="chat" readonly></textarea>
+                    <br />
+                    <input id="text" placeholder="Digite sua mensagem">
+                </div>
+            </th>
+        </table>
+    </div>
+</body>
+</html>

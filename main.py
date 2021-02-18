@@ -275,10 +275,15 @@ def delete_questionnaires(path):
     if data_base.get_type_account(user) == "Professor" and data_base.is_questionnaires(path): data_base.delete_quiz(path)
     return redirect('/panel')
 
+#chat
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
 #rotas websocket
 @socketio.on('joined')
-def joined(message):
-    room = 'main_room'
+def joined(rooms):
+    room = rooms['room']
     session['room'] = room
     join_room(room)
     menssage = data_base.get_menssage(room)
